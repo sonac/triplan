@@ -1,0 +1,103 @@
+.body {
+  margin-top: 5vh;
+  margin-left: 25vw;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th {
+  height: 4em;
+}
+
+td {
+  height: 15em;
+  width: 15em;
+  padding: 1em;
+  text-align: right;
+  vertical-align: top;
+}
+
+td:hover {
+  background-color: #f0eeee;
+  cursor: pointer;
+}
+
+.activity {
+  border: 0.05em solid #4f4f4f;
+  border-radius: 0.5em;
+  height: 3em;
+  text-align: center;
+  line-height: 3em;
+  margin: 1em;
+}
+
+.plans {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 3em;
+  justify-content: space-around;
+}
+
+.plan {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  margin: 1em;
+}
+
+.plan-form {
+  display: flex;
+  flex-direction: column;
+  margin: 1em;
+  width: 20em;
+}
+
+.viewTypeButton {
+  background-color: #d6cba4;
+  padding: 1em;
+  font-weight: bold;
+  padding: 1em;
+  margin: 1em;
+  width: 16vw;
+}
+
+.viewTypeButton:hover {
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.chooseViewTypes {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.activityHeader {
+  font-size: 1.3em;
+  background-color: #e1e0e0;
+  font-weight: bold;
+  width: 30vw;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  justify-items: center;
+}
+
+.allActivitiesWithMap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.loginButton {
+  border: solid 0.5vw #936565;
+}
+
+.loginButton:hover {
+  cursor: pointer;
+}

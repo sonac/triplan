@@ -1,0 +1,22 @@
+.menuItem {
+  font-weight: bold;
+  font-size: 2em;
+  margin: 0.5vh;
+}
+
+.menuItem:hover {
+  cursor: pointer;
+  opacity: 0.3;
+}
+
+.sidebar {
+  border-right: solid 0.5vw #936565;
+  width: 25%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  z-index: 1;
+  padding-top: 8vh;
+}

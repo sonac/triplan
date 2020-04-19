@@ -1,0 +1,16 @@
+@font-face {
+  font-family: "Roboto Mono";
+  src: url("/fonts/RobotoMono-Medium.ttf");
+}
+
+html {
+  background-color: #cc8c78;
+  font-family: "Roboto", sans-serif;
+}
+
+.app {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  font-size: 14px;
+}
