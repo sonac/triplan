@@ -24,10 +24,9 @@ class UserService(
     config: UserConfig
 ) extends StrictLogging {
 
-  private val LoginAlreadyUsed = "Login already in use!"
   private val EmailAlreadyUsed = "E-mail already in use!"
 
-  def registerNewUser(login: String, email: String, password: String): ConnectionIO[ApiKey] = {
+  def registerNewUser(email: String, password: String): ConnectionIO[ApiKey] = {
     def failIfDefined(op: ConnectionIO[Option[User]], msg: String): ConnectionIO[Unit] = {
       op.flatMap {
         case None    => ().pure[ConnectionIO]
@@ -36,13 +35,12 @@ class UserService(
     }
 
     def checkUserDoesNotExist(): ConnectionIO[Unit] = {
-      failIfDefined(userModel.findByLogin(login.lowerCased), LoginAlreadyUsed) >>
-        failIfDefined(userModel.findByEmail(email.lowerCased), EmailAlreadyUsed)
+      failIfDefined(userModel.findByEmail(email.lowerCased), EmailAlreadyUsed)
     }
 
     def doRegister(): ConnectionIO[ApiKey] = {
-      val user = User(idGenerator.nextId[User](), login, login.lowerCased, email.lowerCased, User.hashPassword(password), clock.instant())
-      val confirmationEmail = emailTemplates.registrationConfirmation(login)
+      val user = User(idGenerator.nextId[User](), email.lowerCased, User.hashPassword(password), clock.instant())
+      val confirmationEmail = emailTemplates.registrationConfirmation(email)
 
       logger.debug(s"Registering new user: ${user.emailLowerCased}, with id: ${user.id}")
 
@@ -55,7 +53,7 @@ class UserService(
 
     for {
       _ <- UserRegisterValidator
-        .validate(login, email, password)
+        .validate(email, password)
         .fold(msg => Fail.IncorrectInput(msg).raiseError[ConnectionIO, Unit], _ => ().pure[ConnectionIO])
       _ <- checkUserDoesNotExist()
       apiKey <- doRegister()
@@ -64,29 +62,19 @@ class UserService(
 
   def findById(id: Id @@ User): ConnectionIO[User] = userOrNotFound(userModel.findById(id))
 
-  def login(loginOrEmail: String, password: String, apiKeyValid: Option[Duration]): ConnectionIO[ApiKey] =
+  def login(email: String, password: String, apiKeyValid: Option[Duration]): ConnectionIO[ApiKey] =
     for {
-      user <- userOrNotFound(userModel.findByLoginOrEmail(loginOrEmail.lowerCased))
+      user <- userOrNotFound(userModel.findByEmail(email.lowerCased))
       _ <- verifyPassword(user, password)
       apiKey <- apiKeyService.create(user.id, apiKeyValid.getOrElse(config.defaultApiKeyValid))
     } yield apiKey
 
-  def changeUser(userId: Id @@ User, newLogin: String, newEmail: String): ConnectionIO[Unit] = {
-    def changeLogin(newLogin: String): ConnectionIO[Unit] = {
-      val newLoginLowerCased = newLogin.lowerCased
-      userModel.findByLogin(newLoginLowerCased).flatMap {
-        case Some(user) if user.id != userId => Fail.IncorrectInput(LoginAlreadyUsed).raiseError[ConnectionIO, Unit]
-        case Some(user) if user.login == newLogin => ().pure[ConnectionIO]
-        case _ =>
-          logger.debug(s"Changing login for user: $userId, to: $newLogin")
-          userModel.updateLogin(userId, newLogin, newLoginLowerCased)
-      }
-    }
+  def changeUser(userId: Id @@ User, newEmail: String): ConnectionIO[Unit] = {
 
     def changeEmail(newEmail: String): ConnectionIO[Unit] = {
       val newEmailLowerCased = newEmail.lowerCased
       userModel.findByEmail(newEmailLowerCased).flatMap {
-        case Some(user) if user.id != userId => Fail.IncorrectInput(EmailAlreadyUsed).raiseError[ConnectionIO, Unit]
+        case Some(user) if user.id != userId                          => Fail.IncorrectInput(EmailAlreadyUsed).raiseError[ConnectionIO, Unit]
         case Some(user) if user.emailLowerCased == newEmailLowerCased => ().pure[ConnectionIO]
         case _ =>
           logger.debug(s"Changing email for user: $userId, to: $newEmail")
@@ -94,7 +82,7 @@ class UserService(
       }
     }
 
-    changeLogin(newLogin) >> changeEmail(newEmail)
+    changeEmail(newEmail)
   }
 
   def changePassword(userId: Id @@ User, currentPassword: String, newPassword: String): ConnectionIO[Unit] =
@@ -125,15 +113,11 @@ object UserRegisterValidator {
   private val ValidationOk = Right(())
   val MinLoginLength = 3
 
-  def validate(login: String, email: String, password: String): Either[String, Unit] =
+  def validate(email: String, password: String): Either[String, Unit] =
     for {
-      _ <- validLogin(login.trim)
       _ <- validEmail(email.trim)
       _ <- validPassword(password.trim)
     } yield ()
-
-  private def validLogin(login: String): Either[String, Unit] =
-    if (login.length >= MinLoginLength) ValidationOk else Left("Login is too short!")
 
   private val emailRegex =
     """^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$""".r

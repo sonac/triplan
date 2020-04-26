@@ -2,10 +2,10 @@ import * as React from "react";
 import { useHistory } from "react-router-dom";
 import { useGlobal, State, Actions } from "../../state";
 
-const styles = require("./styles.css");
+require("./styles.scss");
 
 export default (props) => {
-  const [state, _] = useGlobal<State, Actions>();
+  const [state, actions] = useGlobal<State, Actions>();
 
   let history = useHistory();
 
@@ -13,22 +13,16 @@ export default (props) => {
     return text.toLocaleLowerCase().replace(/ /g, "-");
   };
   const handleClick = (page) => {
+    actions.changePage(page);
     history.push(toKebab(page));
   };
 
-  const loginOrActivities = state.currentUser ? "MY ACTIVITIES" : "LOGIN";
-
-  const menuItems = ["PLANS", "MY PLAN", "PROPOSE NEW PLAN", loginOrActivities];
+  const menuItems = ["PLANS", "MY PLAN", "PROPOSE NEW PLAN", "MY ACTIVITIES"];
 
   return (
-    <div className={styles.sidebar}>
+    <div className="sidebar">
       {menuItems.map((menuItem) => (
-        <div
-          className={styles.menuItem}
-          key={menuItem}
-          style={{ font: "bold 2em" }}
-          onClick={() => handleClick(menuItem)}
-        >
+        <div className="menuItem" key={menuItem} style={{ font: "bold 2em" }} onClick={() => handleClick(menuItem)}>
           {menuItem}
         </div>
       ))}

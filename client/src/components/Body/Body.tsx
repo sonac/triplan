@@ -1,16 +1,64 @@
 import * as React from "react";
+import { useState, useCallback } from "react";
 import { Switch, Route } from "react-router-dom";
+import * as Modal from "react-modal";
 import Calendar from "./Calendar";
 import Plans from "./Plans";
 import UserActivities from "./UserActivities";
-import Login from "./Login";
 import { useGlobal, State, Actions } from "../../state";
 
 require("./styles.scss");
 
+interface AuthInput {
+  email: string;
+  password: string;
+}
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "60%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    width: "50em",
+    height: "30em",
+    backgroundColor: "#cc8c78",
+    transform: "translate(-50%, -50%)",
+  },
+};
+
+// Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
+Modal.setAppElement("#root");
+
 export default (props) => {
-  const [state, _] = useGlobal<State, Actions>();
-  console.log(state);
+  const [state, actions] = useGlobal<State, Actions>();
+  const [authInput, setAuth] = useState({ email: "", password: "" });
+  const [isSendding, setIsSending] = useState(false);
+
+  const sendAuth = useCallback(
+    async (authType: string) => {
+      const authEndpoint = authType === "Sign Up" ? "register" : "login";
+      if (isSendding) return;
+      setIsSending(true);
+      await fetch(`/api/v1/user/${authEndpoint}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(authInput),
+      })
+        .then((resp) => console.log(resp))
+        .catch((err) => console.error(err));
+      setIsSending(false);
+    },
+    [isSendding]
+  );
+
+  const handleChange = (e, inp) => {
+    if (inp === "email") setAuth({ ...authInput, email: e.target.value });
+    if (inp === "password") setAuth({ ...authInput, password: e.target.value });
+  };
 
   return (
     <div className="body">
@@ -24,13 +72,30 @@ export default (props) => {
         <Route path="/my-activities">
           <UserActivities />
         </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
         <Route path="/">
           <div>hey body</div>
         </Route>
       </Switch>
+      <Modal
+        isOpen={state.authModal !== null}
+        onRequestClose={() => actions.authModalSwitch(null)}
+        style={customStyles}
+        contentLabel="Auth"
+      >
+        <h2 className="modalHeader">{state.authModal}</h2>
+        <p className="valid">Valid. Please wait</p>
+        <p className="error">Error. Please fix your inputs</p>
+        <input placeholder="Email" type="text" id="username" onChange={(e) => handleChange(e, "email")}></input>
+        <input
+          placeholder="Password"
+          type="password"
+          id="password"
+          onChange={(e) => handleChange(e, "password")}
+        ></input>
+        <button id="submit" onClick={() => sendAuth(state.authModal)}>
+          Login
+        </button>
+      </Modal>
     </div>
   );
 };

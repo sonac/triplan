@@ -85,6 +85,7 @@ class HttpApi(
   private val respondWithIndex: HttpRoutes[Task] = Kleisli(req => OptionT.liftF(indexResponse(req)))
 
   private def loggingMiddleware(service: HttpRoutes[Task]): HttpRoutes[Task] = Kleisli { req: Request[Task] =>
+    println(req)
     OptionT(for {
       _ <- Task(logger.debug(s"Starting request to: ${req.uri.path}"))
       r <- service(req).value

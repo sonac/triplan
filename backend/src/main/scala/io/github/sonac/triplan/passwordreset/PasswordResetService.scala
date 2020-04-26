@@ -25,8 +25,9 @@ class PasswordResetService(
     xa: Transactor[Task]
 ) extends StrictLogging {
 
-  def forgotPassword(loginOrEmail: String): ConnectionIO[Unit] = {
-    userModel.findByLoginOrEmail(loginOrEmail.lowerCased).flatMap {
+  def forgotPassword(email: String): ConnectionIO[Unit] = {
+    println(email)
+    userModel.findByEmail(email.lowerCased).flatMap {
       case None => Fail.NotFound("user").raiseError[ConnectionIO, Unit]
       case Some(user) =>
         createCode(user).flatMap(sendCode(user, _))
@@ -47,7 +48,7 @@ class PasswordResetService(
 
   private def prepareResetEmail(user: User, code: PasswordResetCode): EmailSubjectContent = {
     val resetLink = String.format(config.resetLinkPattern, code.id)
-    emailTemplates.passwordReset(user.login, resetLink)
+    emailTemplates.passwordReset(user.emailLowerCased, resetLink)
   }
 
   def resetPassword(code: String, newPassword: String): Task[Unit] = {

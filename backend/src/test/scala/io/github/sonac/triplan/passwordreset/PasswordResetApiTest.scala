@@ -27,11 +27,12 @@ class PasswordResetApiTest extends BaseTest with TestEmbeddedPostgres with Event
 
   "/passwordreset" should "reset the password" in {
     // given
-    val RegisteredUser(login, email, password, _) = newRegisteredUsed()
+    val RegisteredUser(email, password, _) = newRegisteredUsed()
     val newPassword = password + password
 
     // when
-    val response1 = forgotPassword(login)
+    val response1 = forgotPassword(email)
+    println(response1)
     response1.shouldDeserializeTo[ForgotPassword_OUT]
 
     // then
@@ -42,18 +43,18 @@ class PasswordResetApiTest extends BaseTest with TestEmbeddedPostgres with Event
     response2.shouldDeserializeTo[PasswordReset_OUT]
 
     // then
-    loginUser(login, password, None).status shouldBe Status.Unauthorized
-    loginUser(login, newPassword, None).status shouldBe Status.Ok
+    loginUser(email, password, None).status shouldBe Status.Unauthorized
+    loginUser(email, newPassword, None).status shouldBe Status.Ok
   }
 
   "/passwordreset" should "reset the password once using the given code" in {
     // given
-    val RegisteredUser(login, email, password, _) = newRegisteredUsed()
+    val RegisteredUser(email, password, _) = newRegisteredUsed()
     val newPassword = password + password
     val newerPassword = newPassword + newPassword
 
     // when
-    val response1 = forgotPassword(login)
+    val response1 = forgotPassword(email)
     response1.shouldDeserializeTo[ForgotPassword_OUT]
 
     // then
@@ -64,13 +65,13 @@ class PasswordResetApiTest extends BaseTest with TestEmbeddedPostgres with Event
     resetPassword(code, newPassword).shouldDeserializeToError
 
     // then
-    loginUser(login, newPassword, None).status shouldBe Status.Ok
-    loginUser(login, newerPassword, None).status shouldBe Status.Unauthorized
+    loginUser(email, newPassword, None).status shouldBe Status.Ok
+    loginUser(email, newerPassword, None).status shouldBe Status.Unauthorized
   }
 
   "/passwordreset" should "not reset the password given an invalid code" in {
     // given
-    val RegisteredUser(login, _, password, _) = newRegisteredUsed()
+    val RegisteredUser(email, password, _) = newRegisteredUsed()
     val newPassword = password + password
 
     // when
@@ -78,13 +79,13 @@ class PasswordResetApiTest extends BaseTest with TestEmbeddedPostgres with Event
     response2.shouldDeserializeToError
 
     // then
-    loginUser(login, password, None).status shouldBe Status.Ok
-    loginUser(login, newPassword, None).status shouldBe Status.Unauthorized
+    loginUser(email, password, None).status shouldBe Status.Ok
+    loginUser(email, newPassword, None).status shouldBe Status.Unauthorized
   }
 
-  def forgotPassword(loginOrEmail: String): Response[Task] = {
+  def forgotPassword(email: String): Response[Task] = {
     val request = Request[Task](method = POST, uri = uri"/passwordreset/forgot")
-      .withEntity(ForgotPassword_IN(loginOrEmail))
+      .withEntity(ForgotPassword_IN(email))
 
     modules.httpApi.mainRoutes(request).unwrap
   }

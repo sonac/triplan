@@ -31,10 +31,10 @@ class UserApiTest extends BaseTest with TestEmbeddedPostgres with Eventually {
 
   "/user/register" should "register" in {
     // given
-    val (login, email, password) = randomLoginEmailPassword()
+    val (email, password) = randomEmailPassword()
 
     // when
-    val response1 = registerUser(login, email, password)
+    val response1 = registerUser(email, password)
 
     // then
     response1.status shouldBe Status.Ok
@@ -49,10 +49,10 @@ class UserApiTest extends BaseTest with TestEmbeddedPostgres with Eventually {
 
   "/user/register" should "not register if data is invalid" in {
     // given
-    val (_, email, password) = randomLoginEmailPassword()
+    val (email, password) = randomEmailPassword()
 
     // when
-    val response1 = registerUser("x", email, password) // too short
+    val response1 = registerUser("x", password) // too short
 
     // then
     response1.status shouldBe Status.BadRequest
@@ -61,11 +61,11 @@ class UserApiTest extends BaseTest with TestEmbeddedPostgres with Eventually {
 
   "/user/register" should "not register if email is taken" in {
     // given
-    val (login, email, password) = randomLoginEmailPassword()
+    val (email, password) = randomEmailPassword()
 
     // when
-    val response1 = registerUser(login + "1", email, password)
-    val response2 = registerUser(login + "2", email, password)
+    val response1 = registerUser(email, password)
+    val response2 = registerUser(email, password)
 
     // then
     response1.status shouldBe Status.Ok
@@ -74,19 +74,19 @@ class UserApiTest extends BaseTest with TestEmbeddedPostgres with Eventually {
 
   "/user/register" should "send a welcome email" in {
     // when
-    val RegisteredUser(login, email, _, _) = newRegisteredUsed()
+    val RegisteredUser(email, _, _) = newRegisteredUsed()
 
     // then
     modules.emailService.sendBatch().unwrap
-    DummyEmailSender.findSentEmail(email, s"registration confirmation for user $login").isDefined shouldBe true
+    DummyEmailSender.findSentEmail(email, s"registration confirmation for user ").isDefined shouldBe true
   }
 
   "/user/login" should "login the user using the login" in {
     // given
-    val RegisteredUser(login, _, password, _) = newRegisteredUsed()
+    val RegisteredUser(email, password, _) = newRegisteredUsed()
 
     // when
-    val response1 = loginUser(login, password)
+    val response1 = loginUser(email, password)
 
     // then
     response1.shouldDeserializeTo[Login_OUT]
@@ -94,7 +94,7 @@ class UserApiTest extends BaseTest with TestEmbeddedPostgres with Eventually {
 
   "/user/login" should "login the user using the email" in {
     // given
-    val RegisteredUser(_, email, password, _) = newRegisteredUsed()
+    val RegisteredUser(email, password, _) = newRegisteredUsed()
 
     // when
     val response1 = loginUser(email, password)
@@ -105,7 +105,7 @@ class UserApiTest extends BaseTest with TestEmbeddedPostgres with Eventually {
 
   "/user/login" should "login the user using uppercase email" in {
     // given
-    val RegisteredUser(_, email, password, _) = newRegisteredUsed()
+    val RegisteredUser(email, password, _) = newRegisteredUsed()
 
     // when
     val response1 = loginUser(email.toUpperCase, password)
@@ -116,10 +116,10 @@ class UserApiTest extends BaseTest with TestEmbeddedPostgres with Eventually {
 
   "/user/login" should "login the user for the given number of hours" in {
     // given
-    val RegisteredUser(login, _, password, _) = newRegisteredUsed()
+    val RegisteredUser(email, password, _) = newRegisteredUsed()
 
     // when
-    val apiKey = loginUser(login, password, Some(3)).shouldDeserializeTo[Login_OUT].apiKey
+    val apiKey = loginUser(email, password, Some(3)).shouldDeserializeTo[Login_OUT].apiKey
 
     // then
     getUser(apiKey).shouldDeserializeTo[GetUser_OUT]
@@ -137,7 +137,7 @@ class UserApiTest extends BaseTest with TestEmbeddedPostgres with Eventually {
 
   "/user/changepassword" should "change the password" in {
     // given
-    val RegisteredUser(login, _, password, apiKey) = newRegisteredUsed()
+    val RegisteredUser(email, password, apiKey) = newRegisteredUsed()
     val newPassword = password + password
 
     // when
@@ -145,13 +145,13 @@ class UserApiTest extends BaseTest with TestEmbeddedPostgres with Eventually {
 
     // then
     response1.shouldDeserializeTo[ChangePassword_OUT]
-    loginUser(login, password, None).status shouldBe Status.Unauthorized
-    loginUser(login, newPassword, None).status shouldBe Status.Ok
+    loginUser(email, password, None).status shouldBe Status.Unauthorized
+    loginUser(email, newPassword, None).status shouldBe Status.Ok
   }
 
   "/user/changepassword" should "not change the password if the current is invalid" in {
     // given
-    val RegisteredUser(login, _, password, apiKey) = newRegisteredUsed()
+    val RegisteredUser(email, password, apiKey) = newRegisteredUsed()
     val newPassword = password + password
 
     // when
@@ -159,35 +159,20 @@ class UserApiTest extends BaseTest with TestEmbeddedPostgres with Eventually {
 
     // then
     response1.shouldDeserializeToError
-    loginUser(login, password, None).status shouldBe Status.Ok
-    loginUser(login, newPassword, None).status shouldBe Status.Unauthorized
+    loginUser(email, password, None).status shouldBe Status.Ok
+    loginUser(email, newPassword, None).status shouldBe Status.Unauthorized
   }
 
   "/user" should "update the login" in {
     // given
-    val RegisteredUser(login, email, _, apiKey) = newRegisteredUsed()
-    val newLogin = login + login
+    val RegisteredUser(email, _, apiKey) = newRegisteredUsed()
+    val newEmail = "foo" + email
 
     // when
-    val response1 = updateUser(apiKey, newLogin, email)
+    val response1 = updateUser(apiKey, newEmail)
 
     // then
     response1.shouldDeserializeTo[UpdateUser_OUT]
-    getUser(apiKey).shouldDeserializeTo[GetUser_OUT].login shouldBe newLogin
-    getUser(apiKey).shouldDeserializeTo[GetUser_OUT].email shouldBe email
-  }
-
-  "/user" should "update the email" in {
-    // given
-    val RegisteredUser(login, _, _, apiKey) = newRegisteredUsed()
-    val (_, newEmail, _) = randomLoginEmailPassword()
-
-    // when
-    val response1 = updateUser(apiKey, login, newEmail)
-
-    // then
-    response1.shouldDeserializeTo[UpdateUser_OUT]
-    getUser(apiKey).shouldDeserializeTo[GetUser_OUT].login shouldBe login
     getUser(apiKey).shouldDeserializeTo[GetUser_OUT].email shouldBe newEmail
   }
 }

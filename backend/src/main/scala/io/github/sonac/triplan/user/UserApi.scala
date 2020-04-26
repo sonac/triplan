@@ -25,8 +25,9 @@ class UserApi(http: Http, auth: Auth[ApiKey], userService: UserService, xa: Tran
     .in(jsonBody[Register_IN])
     .out(jsonBody[Register_OUT])
     .serverLogic { data =>
+      println(data)
       (for {
-        apiKey <- userService.registerNewUser(data.login, data.email, data.password).transact(xa)
+        apiKey <- userService.registerNewUser(data.email, data.password).transact(xa)
         _ <- Task(Metrics.registeredUsersCounter.inc())
       } yield Register_OUT(apiKey.id)).toOut
     }
@@ -36,11 +37,14 @@ class UserApi(http: Http, auth: Auth[ApiKey], userService: UserService, xa: Tran
     .in(jsonBody[Login_IN])
     .out(jsonBody[Login_OUT])
     .serverLogic { data =>
-      (for {
-        apiKey <- userService
-          .login(data.loginOrEmail, data.password, data.apiKeyValidHours.map(h => Duration(h.toLong, HOURS)))
-          .transact(xa)
-      } yield Login_OUT(apiKey.id)).toOut
+      {
+        println(data)
+        (for {
+          apiKey <- userService
+            .login(data.email, data.password, data.apiKeyValidHours.map(h => Duration(h.toLong, HOURS)))
+            .transact(xa)
+        } yield Login_OUT(apiKey.id)).toOut
+      }
     }
 
   private val changePasswordEndpoint = secureEndpoint.post
@@ -62,7 +66,7 @@ class UserApi(http: Http, auth: Auth[ApiKey], userService: UserService, xa: Tran
       (for {
         userId <- auth(authData)
         user <- userService.findById(userId).transact(xa)
-      } yield GetUser_OUT(user.login, user.emailLowerCased, user.createdOn)).toOut
+      } yield GetUser_OUT(user.emailLowerCased, user.createdOn)).toOut
     }
 
   private val updateUserEndpoint = secureEndpoint.post
@@ -73,7 +77,7 @@ class UserApi(http: Http, auth: Auth[ApiKey], userService: UserService, xa: Tran
       case (authData, data) =>
         (for {
           userId <- auth(authData)
-          _ <- userService.changeUser(userId, data.login, data.email).transact(xa)
+          _ <- userService.changeUser(userId, data.email).transact(xa)
         } yield UpdateUser_OUT()).toOut
     }
 
@@ -91,17 +95,17 @@ class UserApi(http: Http, auth: Auth[ApiKey], userService: UserService, xa: Tran
 
 object UserApi {
 
-  case class Register_IN(login: String, email: String, password: String)
+  case class Register_IN(email: String, password: String)
   case class Register_OUT(apiKey: String)
 
   case class ChangePassword_IN(currentPassword: String, newPassword: String)
   case class ChangePassword_OUT()
 
-  case class Login_IN(loginOrEmail: String, password: String, apiKeyValidHours: Option[Int])
+  case class Login_IN(email: String, password: String, apiKeyValidHours: Option[Int])
   case class Login_OUT(apiKey: String)
 
-  case class UpdateUser_IN(login: String, email: String)
+  case class UpdateUser_IN(email: String)
   case class UpdateUser_OUT()
 
-  case class GetUser_OUT(login: String, email: String, createdOn: Instant)
+  case class GetUser_OUT(email: String, createdOn: Instant)
 }

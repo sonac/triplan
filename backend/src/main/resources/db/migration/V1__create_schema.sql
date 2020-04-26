@@ -2,15 +2,12 @@
 CREATE TABLE "users"
 (
   "id"              TEXT        NOT NULL,
-  "login"           TEXT        NOT NULL,
-  "login_lowercase" TEXT        NOT NULL,
   "email_lowercase" TEXT        NOT NULL,
   "password"        TEXT        NOT NULL,
   "created_on"      TIMESTAMPTZ NOT NULL
 );
 ALTER TABLE "users"
   ADD CONSTRAINT "users_id" PRIMARY KEY ("id");
-CREATE UNIQUE INDEX "users_login_lowercase" ON "users" ("login_lowercase");
 CREATE UNIQUE INDEX "users_email_lowercase" ON "users" ("email_lowercase");
 
 -- API KEYS

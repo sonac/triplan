@@ -11,29 +11,29 @@ import scala.util.Random
 
 class Requests(val modules: MainModule) extends HttpTestSupport {
 
-  case class RegisteredUser(login: String, email: String, password: String, apiKey: String)
+  case class RegisteredUser(email: String, password: String, apiKey: String)
 
   private val random = new Random()
 
-  def randomLoginEmailPassword(): (String, String, String) =
-    (random.nextString(12), s"user${random.nextInt(9000)}@triplan.com", random.nextString(12))
+  def randomEmailPassword(): (String, String) =
+    (s"user${random.nextInt(9000)}@triplan.com", random.nextString(12))
 
-  def registerUser(login: String, email: String, password: String): Response[Task] = {
+  def registerUser(email: String, password: String): Response[Task] = {
     val request = Request[Task](method = POST, uri = uri"/user/register")
-      .withEntity(Register_IN(login, email, password))
+      .withEntity(Register_IN(email, password))
 
     modules.httpApi.mainRoutes(request).unwrap
   }
 
   def newRegisteredUsed(): RegisteredUser = {
-    val (login, email, password) = randomLoginEmailPassword()
-    val apiKey = registerUser(login, email, password).shouldDeserializeTo[Register_OUT].apiKey
-    RegisteredUser(login, email, password, apiKey)
+    val (email, password) = randomEmailPassword()
+    val apiKey = registerUser(email, password).shouldDeserializeTo[Register_OUT].apiKey
+    RegisteredUser(email, password, apiKey)
   }
 
-  def loginUser(loginOrEmail: String, password: String, apiKeyValidHours: Option[Int] = None): Response[Task] = {
+  def loginUser(email: String, password: String, apiKeyValidHours: Option[Int] = None): Response[Task] = {
     val request = Request[Task](method = POST, uri = uri"/user/login")
-      .withEntity(Login_IN(loginOrEmail, password, apiKeyValidHours))
+      .withEntity(Login_IN(email, password, apiKeyValidHours))
 
     modules.httpApi.mainRoutes(request).unwrap
   }
@@ -50,9 +50,9 @@ class Requests(val modules: MainModule) extends HttpTestSupport {
     modules.httpApi.mainRoutes(authorizedRequest(apiKey, request)).unwrap
   }
 
-  def updateUser(apiKey: String, login: String, email: String): Response[Task] = {
+  def updateUser(apiKey: String, email: String): Response[Task] = {
     val request = Request[Task](method = POST, uri = uri"/user")
-      .withEntity(UpdateUser_IN(login, email))
+      .withEntity(UpdateUser_IN(email))
 
     modules.httpApi.mainRoutes(authorizedRequest(apiKey, request)).unwrap
   }

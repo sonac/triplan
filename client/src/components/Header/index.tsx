@@ -1,14 +1,20 @@
 import * as React from "react";
 import { useGlobal, State, Actions } from "../../state";
 
-const styles = require("./styles.css");
+require("./styles.scss");
 
-export default props => {
-  const [state, _] = useGlobal<State, Actions>();
+export default (props) => {
+  const [state, actions] = useGlobal<State, Actions>();
 
   return (
-    <div className={styles.header}>
-      <div className={styles.current}>{state.page}</div>
+    <div className="header">
+      <div className="current">{state.page}</div>
+      <div className="signUpButton" onClick={() => actions.authModalSwitch("Sign Up")}>
+        SIGN UP
+      </div>
+      <div className="loginButton" onClick={() => actions.authModalSwitch("Login To Your Account")}>
+        LOGIN
+      </div>
     </div>
   );
 };
