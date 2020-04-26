@@ -31,13 +31,13 @@ const customStyles = {
 // Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement("#root");
 
-export default (props) => {
+export default (_) => {
   const [state, actions] = useGlobal<State, Actions>();
   const [authInput, setAuth] = useState({ email: "", password: "" });
   const [isSendding, setIsSending] = useState(false);
 
   const sendAuth = useCallback(
-    async (authType: string) => {
+    async (authType: string, authInput: AuthInput) => {
       const authEndpoint = authType === "Sign Up" ? "register" : "login";
       if (isSendding) return;
       setIsSending(true);
@@ -48,7 +48,7 @@ export default (props) => {
         },
         body: JSON.stringify(authInput),
       })
-        .then((resp) => console.log(resp))
+        .then((resp) => resp.json().then((d) => console.log(d)))
         .catch((err) => console.error(err));
       setIsSending(false);
     },
@@ -92,7 +92,7 @@ export default (props) => {
           id="password"
           onChange={(e) => handleChange(e, "password")}
         ></input>
-        <button id="submit" onClick={() => sendAuth(state.authModal)}>
+        <button id="submit" onClick={() => sendAuth(state.authModal, authInput)}>
           Login
         </button>
       </Modal>
