@@ -9,12 +9,18 @@ export default (props) => {
   return (
     <div className="header">
       <div className="current">{state.page}</div>
-      <div className="signUpButton" onClick={() => actions.authModalSwitch("Sign Up")}>
-        SIGN UP
-      </div>
-      <div className="loginButton" onClick={() => actions.authModalSwitch("Login To Your Account")}>
-        LOGIN
-      </div>
+      {state.user ? (
+        <div>Hello, {state.user.email}</div>
+      ) : (
+        <div className="authBlock">
+          <div className="signUpButton" onClick={() => actions.authModalSwitch("Sign Up")}>
+            SIGN UP
+          </div>
+          <div className="loginButton" onClick={() => actions.authModalSwitch("Login To Your Account")}>
+            LOGIN
+          </div>
+        </div>
+      )}
     </div>
   );
 };

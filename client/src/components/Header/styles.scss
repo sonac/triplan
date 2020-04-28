@@ -19,24 +19,28 @@
   padding-top: 7%;
 }
 
-.signUpButton {
+.authBlock {
   grid-column-start: 4;
-  grid-column-end: 5;
+  grid-column-end: 6;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.signUpButton {
   border: solid 6px #654e4e;
   font-size: 2em;
   text-align: center;
   padding-top: 7%;
-  margin-right: 1em;
+  width: 5em;
 }
 
 .loginButton {
-  grid-column-start: 5;
-  grid-column-end: 6;
   background-color: #654e4e;
   font-size: 2em;
   text-align: center;
   padding-top: 7%;
-  margin-right: 1em;
+  width: 5em;
 }
 
 .loginButton:hover {

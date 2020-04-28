@@ -28,6 +28,7 @@
     "moment": "^2.24.0",
     "node-sass": "^4.13.0",
     "react": "^16.8.6",
+    "react-cookie": "^4.0.3",
     "react-dom": "^16.4.1",
     "react-map-gl": "^5.2.3",
     "react-modal": "^3.11.2",

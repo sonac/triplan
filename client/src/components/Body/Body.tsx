@@ -2,6 +2,7 @@ import * as React from "react";
 import { useState, useCallback } from "react";
 import { Switch, Route } from "react-router-dom";
 import * as Modal from "react-modal";
+import { useCookies } from "react-cookie";
 import Calendar from "./Calendar";
 import Plans from "./Plans";
 import UserActivities from "./UserActivities";
@@ -35,6 +36,7 @@ export default (_) => {
   const [state, actions] = useGlobal<State, Actions>();
   const [authInput, setAuth] = useState({ email: "", password: "" });
   const [isSendding, setIsSending] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(["auth"]);
 
   const sendAuth = useCallback(
     async (authType: string, authInput: AuthInput) => {
@@ -48,7 +50,12 @@ export default (_) => {
         },
         body: JSON.stringify(authInput),
       })
-        .then((resp) => resp.json().then((d) => console.log(d)))
+        .then((resp) =>
+          resp.json().then((d) => {
+            actions.authModalSwitch(null);
+            setCookie("apiKey", d.apiKey);
+          })
+        )
         .catch((err) => console.error(err));
       setIsSending(false);
     },
