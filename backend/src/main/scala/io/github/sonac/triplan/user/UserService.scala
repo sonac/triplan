@@ -39,7 +39,7 @@ class UserService(
     }
 
     def doRegister(): ConnectionIO[ApiKey] = {
-      val user = User(idGenerator.nextId[User](), email.lowerCased, User.hashPassword(password), clock.instant())
+      val user = User(idGenerator.nextId[User](), email.lowerCased, User.hashPassword(password), clock.instant(), false, None)
       val confirmationEmail = emailTemplates.registrationConfirmation(email)
 
       logger.debug(s"Registering new user: ${user.emailLowerCased}, with id: ${user.id}")

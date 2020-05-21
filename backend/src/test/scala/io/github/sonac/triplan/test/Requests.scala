@@ -57,4 +57,16 @@ class Requests(val modules: MainModule) extends HttpTestSupport {
     modules.httpApi.mainRoutes(authorizedRequest(apiKey, request)).unwrap
   }
 
+  def stravaAuth(): Response[Task] = {
+    val request = Request[Task](method = GET, uri = uri"/strava/authorize")
+
+    modules.httpApi.mainRoutes(request).unwrap
+  }
+
+  def stravaExchangeToken(): Response[Task] = {
+    val request = Request[Task](method = GET, uri = uri"/strava/exchange-token")
+
+    modules.httpApi.mainRoutes(request).unwrap
+  }
+
 }

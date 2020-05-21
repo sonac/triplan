@@ -94,6 +94,14 @@ td:hover {
   grid-template-columns: 1fr 1fr;
 }
 
+.modalContent {
+  margin-left: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding-top: 15%;
+}
+
 .modalHeader {
   margin: 10 10 20px;
   margin-left: 2em;
@@ -103,43 +111,32 @@ td:hover {
 }
 
 input {
-  outline: none;
-  display: block;
   width: 80%;
-  height: 10%;
-  margin: 0 0 20px;
-  margin-left: 2em;
-  padding: 10px 15px;
-  border: 1px solid #ccc;
+  height: 15%;
+  padding: 20px;
   font-size: 1em;
-  transition: 0.2s linear;
-  font-weight: 400;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  &input:focus {
-    color: #333;
-    border: 1px solid #44c4e7;
-  }
+  background-color: #1e202c;
+  box-shadow: 1px 1px 2px #2b2834, -1px -1px 2px #0c0c0c;
+  border: 0;
+  color: white;
 }
 
 button {
-  cursor: pointer;
-  background: #44c4e7;
-  padding: 10px 15px;
-  margin-left: 2.3em;
+  margin-top: 3em;
+  margin-left: 25%;
+  width: 40%;
+  border-radius: 5em;
+  padding: 20px;
+  background-image: linear-gradient(to right, rgba(66, 0, 255, 0.3), rgba(41, 43, 54, 0.3));
+  background-color: #151723;
+  color: white;
+  font-size: 1.3em;
+  font-family: "Soulmaze";
+  letter-spacing: 2px;
   border: 0;
-  color: #fff;
-  font-family: "Roboto";
-  font-size: 14px;
-  font-weight: 400;
-  height: 10%;
-  width: 84%;
-  &:hover {
-    background: #369cb8;
-  }
 }
 
-.error,
-.valid {
-  display: none;
+.label {
+  margin-bottom: 2em;
+  margin-top: 2em;
 }

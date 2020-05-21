@@ -18,14 +18,19 @@ interface AuthInput {
 const customStyles = {
   content: {
     top: "50%",
-    left: "60%",
+    left: "50%",
     right: "auto",
     bottom: "auto",
     marginRight: "-50%",
-    width: "50em",
-    height: "30em",
-    backgroundColor: "#cc8c78",
+    width: "30%",
+    height: "30vw",
     transform: "translate(-50%, -50%)",
+    backgroundColor: "#1e202c",
+    fontFamily: "Roboto Mono",
+    color: "white",
+    border: 0,
+    boxShadow: "inset 4px 4px 12px #3A3F5E, inset -4px -4px 12px #000000",
+    borderRadius: "2em",
   },
 };
 
@@ -67,6 +72,9 @@ export default (_) => {
     if (inp === "password") setAuth({ ...authInput, password: e.target.value });
   };
 
+  // removing dim
+  Modal.defaultStyles.overlay.backgroundColor = "rgba(0, 0, 0, 0)";
+
   return (
     <div className="body">
       <Switch>
@@ -87,21 +95,24 @@ export default (_) => {
         isOpen={state.authModal !== null}
         onRequestClose={() => actions.authModalSwitch(null)}
         style={customStyles}
+        backdropOpacity={0}
         contentLabel="Auth"
       >
-        <h2 className="modalHeader">{state.authModal}</h2>
-        <p className="valid">Valid. Please wait</p>
-        <p className="error">Error. Please fix your inputs</p>
-        <input placeholder="Email" type="text" id="username" onChange={(e) => handleChange(e, "email")}></input>
-        <input
-          placeholder="Password"
-          type="password"
-          id="password"
-          onChange={(e) => handleChange(e, "password")}
-        ></input>
-        <button id="submit" onClick={() => sendAuth(state.authModal, authInput)}>
-          Login
-        </button>
+        <div className="modalContent">
+          <p className="valid" style={{ display: "none" }}>
+            Valid. Please wait
+          </p>
+          <p className="error" style={{ display: "none" }}>
+            Error. Please fix your inputs
+          </p>
+          <div className="label">E-mail</div>
+          <input type="text" id="username" onChange={(e) => handleChange(e, "email")}></input>
+          <div className="label">Password</div>
+          <input type="password" id="password" onChange={(e) => handleChange(e, "password")}></input>
+          <button id="submit" onClick={() => sendAuth(state.authModal, authInput)}>
+            {state.authModal}
+          </button>
+        </div>
       </Modal>
     </div>
   );

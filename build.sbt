@@ -32,6 +32,7 @@ val httpDependencies = Seq(
   "org.http4s" %% "http4s-circe" % http4sVersion,
   "org.http4s" %% "http4s-prometheus-metrics" % http4sVersion,
   "com.softwaremill.sttp.client" %% "async-http-client-backend-monix" % sttpVersion,
+  "com.softwaremill.sttp.client" %% "core" % sttpVersion,
   "com.softwaremill.sttp.tapir" %% "tapir-http4s-server" % tapirVersion
 )
 
@@ -90,7 +91,7 @@ val dbTestingStack = Seq(embeddedPostgres)
 
 val commonDependencies = baseDependencies ++ unitTestingStack ++ loggingDependencies ++ configDependencies
 
-lazy val uiProjectName = "ui"
+lazy val uiProjectName = "client"
 lazy val uiDirectory = settingKey[File]("Path to the ui project directory")
 lazy val updateYarn = taskKey[Unit]("Update yarn")
 lazy val yarnTask = inputKey[Unit]("Run yarn with arguments")

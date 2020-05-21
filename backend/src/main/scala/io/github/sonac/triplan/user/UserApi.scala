@@ -66,7 +66,7 @@ class UserApi(http: Http, auth: Auth[ApiKey], userService: UserService, xa: Tran
       (for {
         userId <- auth(authData)
         user <- userService.findById(userId).transact(xa)
-      } yield GetUser_OUT(user.emailLowerCased, user.createdOn)).toOut
+      } yield GetUser_OUT(user.emailLowerCased, user.connectedToStrava, user.createdOn)).toOut
     }
 
   private val updateUserEndpoint = secureEndpoint.post
@@ -107,5 +107,5 @@ object UserApi {
   case class UpdateUser_IN(email: String)
   case class UpdateUser_OUT()
 
-  case class GetUser_OUT(email: String, createdOn: Instant)
+  case class GetUser_OUT(email: String, connectedToStrava: Boolean, createdOn: Instant)
 }

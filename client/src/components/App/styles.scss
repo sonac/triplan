@@ -1,10 +1,26 @@
 @font-face {
   font-family: "Roboto Mono";
-  src: url("/fonts/RobotoMono-Medium.ttf");
+  src: url("/fonts/RobotoMono-Medium.ttf"), url("/fonts/RobotoMono-Bold.ttf");
+}
+
+@font-face {
+  font-family: "Soulmaze";
+  src: url("/fonts/MADE-Soulmaze-PERSONAL-USE.woff");
+}
+
+@font-face {
+  font-family: "Soulmaze Brush";
+  src: url("/fonts/MADE-Soulmaze-Brush-PERSONAL-USE.woff");
+}
+
+@font-face {
+  font-family: "Soulmaze Outlined";
+  src: url("/fonts/MADE-Soulmaze-Outline-PERSONAL-USE.woff");
+  text-shadow: black;
 }
 
 html {
-  background-color: #cc8c78;
+  background-color: #1e202c;
   font-family: "Roboto", sans-serif;
 }
 

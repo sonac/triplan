@@ -18,11 +18,18 @@ export default (props) => {
       fetch("/api/v1/user", {
         method: "GET",
         headers: {
-          Authorization: "Bearer " + cookies.auth,
+          Authorization: "Bearer " + cookies.apiKey,
         },
       })
-        .then((resp) => resp.json())
-        .then((data) => actions.setUser(data))
+        .then((resp) => {
+          if (resp.status === 200) {
+            resp.json().then((data) => {
+              actions.setUser(data);
+            });
+          } else {
+            removeCookie("auth");
+          }
+        })
         .catch((err) => console.error(err));
     }, []);
   }
@@ -31,7 +38,6 @@ export default (props) => {
     <Router>
       <div className="app">
         <Header />
-        <Sidebar />
         <Body />
       </div>
     </Router>

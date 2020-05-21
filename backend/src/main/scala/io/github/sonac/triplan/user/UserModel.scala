@@ -13,8 +13,8 @@ import tsec.passwordhashers.jca.SCrypt
 class UserModel {
 
   def insert(user: User): ConnectionIO[Unit] = {
-    sql"""INSERT INTO users (id, email_lowercase, password, created_on)
-         |VALUES (${user.id}, ${user.emailLowerCased}, ${user.passwordHash}, ${user.createdOn})""".stripMargin.update.run.void
+    sql"""INSERT INTO users (id, email_lowercase, password, created_on, connected_to_strava, strava_token)
+         |VALUES (${user.id}, ${user.emailLowerCased}, ${user.passwordHash}, ${user.createdOn}, ${user.connectedToStrava}, ${user.stravaToken})""".stripMargin.update.run.void
   }
 
   def findById(id: Id @@ User): ConnectionIO[Option[User]] = {
@@ -26,7 +26,7 @@ class UserModel {
   }
 
   private def findBy(by: Fragment): ConnectionIO[Option[User]] = {
-    (sql"SELECT id, email_lowercase, password, created_on FROM users WHERE " ++ by)
+    (sql"SELECT id, email_lowercase, password, created_on, connected_to_strava, strava_token FROM users WHERE " ++ by)
       .query[User]
       .option
   }
@@ -36,13 +36,18 @@ class UserModel {
 
   def updateEmail(userId: Id @@ User, newEmail: String @@ LowerCased): ConnectionIO[Unit] =
     sql"""UPDATE users SET email_lowercase = $newEmail WHERE id = $userId""".stripMargin.update.run.void
+
+  def updateToken(userId: Id @@ User, token: String): ConnectionIO[Unit] =
+    sql"""UPDATE users SET token = $token WHERE id = $userId""".stripMargin.update.run.void
 }
 
 case class User(
     id: Id @@ User,
     emailLowerCased: String @@ LowerCased,
     passwordHash: PasswordHash[SCrypt],
-    createdOn: Instant
+    createdOn: Instant,
+    connectedToStrava: Boolean,
+    stravaToken: Option[String]
 ) {
 
   def verifyPassword(password: String): VerificationStatus = SCrypt.checkpw[cats.Id](password, passwordHash)
