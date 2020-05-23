@@ -18,17 +18,17 @@ export interface MapActivity {
   mapPolyline: string;
 }
 
-const colorMap = {
-  Running: "red",
-  Cycling: "green",
-  Swimming: "blue"
+const iconMap = {
+  Running: "images/shoe_icon.svg",
+  Cycling: "images/bike_icon.svg",
+  Swimming: "images/swim_icon.svg",
 };
 
-export default props => {
-  const color = colorMap[props.activity.activityType];
+export default (props) => {
+  const icon = iconMap[props.activity.activityType];
   return (
-    <div className="activity" style={{ backgroundColor: color }}>
-      {props.activity.description}
+    <div className="activity">
+      <img src={icon} />
     </div>
   );
 };

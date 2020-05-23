@@ -1,39 +1,152 @@
 .body {
   margin-top: 5vh;
-  margin-left: 25vw;
 }
 
 table,
 th,
 td {
   border: 1px solid black;
+}
+
+table {
   border-collapse: collapse;
+  border-style: hidden;
 }
 
 th {
-  height: 4em;
+  height: 6vw;
+  width: 6vw;
+  vertical-align: bottom;
 }
 
 td {
-  height: 15em;
-  width: 15em;
-  padding: 1em;
+  font-family: "Soulmaze Brush";
+  font-size: 2em;
+  height: 8vw;
+  width: 8vw;
   text-align: right;
   vertical-align: top;
+  color: #2b2f48;
 }
 
-td:hover {
-  background-color: #f0eeee;
-  cursor: pointer;
+table tr:first-child td {
+  border-top: 0;
+}
+table tr td:first-child {
+  border-left: 0;
+}
+table tr:last-child td {
+  border-bottom: 0;
+}
+table tr td:last-child {
+  border-right: 0;
+}
+
+.calendarContainer {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 7fr 0.5fr 1fr;
+  grid-template-rows: 1fr 3fr 1fr 3fr;
+}
+
+.calendar {
+  width: 58vw;
+  box-shadow: inset 4px 4px 16px #2b2834, inset -4px -4px 16px #0c0c0c;
+  border-radius: 20px;
+  grid-column-start: 3;
+  grid-column-end: 5;
+  grid-row-start: 2;
+  grid-row-end: 5;
+}
+
+.month {
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  font-size: 8em;
+  text-align: right;
+  font-family: "Soulmaze Brush";
+  padding-right: 20vw;
+  justify-self: right;
+}
+
+.year {
+  grid-column-start: 4;
+  grid-column-end: 5;
+  grid-row-start: 2;
+  grid-row-end: 3;
+  font-size: 8em;
+  font-family: "Soulmaze Brush";
+  text-align: right;
+  padding-right: 1vw;
+}
+
+.leftArrow {
+  grid-column: 2 / 2;
+  grid-row: 3 / 4;
+  border-radius: 5em;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 3vw;
+  height: 3vw;
+  box-shadow: inset 4px 4px 16px #2b2834, inset -4px -4px 16px #0c0c0c;
+  align-self: center;
+  justify-self: right;
+  margin-right: 1em;
+}
+
+.rightArrow {
+  grid-column-start: 4;
+  grid-column-end: 5;
+  grid-row-start: 3;
+  grid-row-end: 4;
+  border-radius: 5em;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 3vw;
+  height: 3vw;
+  box-shadow: 4px 4px 16px #2b2834, -4px -4px 16px #0c0c0c;
+  align-self: center;
+  justify-self: left;
+  transform: rotate(180deg);
+  margin-left: 1em;
+}
+
+.dowContainer {
+  background-color: rgb(22, 23, 32);
+  color: white;
+  height: 50%;
+  text-align: center;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.activitiesContainer {
+  margin-top: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 
 .activity {
-  border: 0.05em solid #4f4f4f;
-  border-radius: 0.5em;
-  height: 3em;
-  text-align: center;
-  line-height: 3em;
-  margin: 1em;
+  border-radius: 5em;
+  box-shadow: inset 1px 1px 4px #2b2834, inset -1px -1px 4px #0c0c0c;
+  width: 30%;
+}
+
+.activity:hover {
+  cursor: pointer;
+}
+
+img {
+  margin-right: 5px;
+  margin-top: 5px;
 }
 
 .plans {
@@ -46,52 +159,23 @@ td:hover {
 
 .plan {
   display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
-  margin: 1em;
-}
-
-.plan-form {
-  display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  align-content: flex-end;
   margin: 1em;
-  width: 20em;
-}
-
-.viewTypeButton {
-  background-color: #d6cba4;
-  padding: 1em;
   font-weight: bold;
-  padding: 1em;
-  margin: 1em;
-  width: 16vw;
+  font-size: 1.5em;
+  width: 10vw;
+  height: 10vw;
+  box-shadow: inset 2px 2px 8px #2b2834, inset -2px -2px 8px #0c0c0c;
+  border-radius: 1em;
+  color: white;
 }
 
-.viewTypeButton:hover {
-  cursor: pointer;
-  opacity: 0.5;
-}
-
-.chooseViewTypes {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-.activityHeader {
-  font-size: 1.3em;
-  background-color: #e1e0e0;
-  font-weight: bold;
-  width: 30vw;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  justify-items: center;
-}
-
-.allActivitiesWithMap {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.planLabel {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .modalContent {
@@ -139,4 +223,39 @@ button {
 .label {
   margin-bottom: 2em;
   margin-top: 2em;
+}
+
+.activityWithMap {
+  border-radius: 55px;
+  background-color: #242737;
+  width: 25vw;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 6em 2em 4em 25vw;
+  color: white;
+}
+
+.activityMap {
+  grid-column: 1 / 4;
+  grid-row: 4 / 4;
+}
+
+p {
+  height: 1.5em;
+}
+
+.icon {
+  z-index: 1;
+  margin-left: 5em;
+  border-radius: 5em;
+  box-shadow: inset 1px 1px 2px #2b2834, inset -1px -1px 2px #0c0c0c;
+  width: 5em;
+  height: 5em;
+  background-color: #242737;
+}
+
+.allActivitiesWithMap {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: space-around;
 }

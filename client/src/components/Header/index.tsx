@@ -1,16 +1,25 @@
 import * as React from "react";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
+import { useHistory } from "react-router-dom";
 import { useGlobal, State, Actions } from "../../state";
 
 require("./styles.scss");
 
 export default (props) => {
+  let history = useHistory();
   const [state, actions] = useGlobal<State, Actions>();
-  const [page, setPage] = useState("PLANS");
+  const [page, setPage] = useState(history.location.pathname.toLocaleUpperCase().replace("/", "").replace("-", " "));
   const [_, __, removeCookie] = useCookies(["auth"]);
 
-  const menuItems = ["PLANS", "ALL ACTIVITIES", "MY PLAN"];
+  const toKebab = (text: string) => {
+    return text.toLocaleLowerCase().replace(/ /g, "-");
+  };
+
+  const handleClick = (page) => {
+    setPage(page);
+    history.push(toKebab(page));
+  };
 
   const buttonPressed = state.authModal === null ? "inset" : "";
 
@@ -41,15 +50,15 @@ export default (props) => {
         </div>
       )}
       <div className="navBar">
-        <div className="navItem" onClick={() => setPage("PLANS")}>
+        <div className="navItem" onClick={() => handleClick("PLANS")}>
           PLANS
         </div>
         <div className="navItem">/</div>
-        <div className="navItem" onClick={() => setPage("ALL ACTIVITIES")}>
-          ALL ACTIVITIES
+        <div className="navItem" onClick={() => handleClick("MY ACTIVITIES")}>
+          MY ACTIVITIES
         </div>
         <div className="navItem">/</div>
-        <div className="navItem" onClick={() => setPage("MY PLAN")}>
+        <div className="navItem" onClick={() => handleClick("MY PLAN")}>
           MY PLAN
         </div>
       </div>

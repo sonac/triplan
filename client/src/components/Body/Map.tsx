@@ -6,50 +6,45 @@ import { PathLayer } from "@deck.gl/layers";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
-const TOKEN =
-  "pk.eyJ1Ijoic29uYWMiLCJhIjoiY2s4MjM0amJoMDI4aTNnbzRqY3R0c3hqOCJ9.Wq8z3oRGCEjfddpHRQ92JA";
+const TOKEN = process.env["REACT_APP_DECK_TOKEN"];
 
-export default props => {
+export default (props) => {
   const data = [
     {
       name: "random-name",
-      color: [101, 147, 245],
-      path: props.path
-    }
+      color: [255, 107, 0],
+      path: props.path,
+    },
   ];
   const [viewport, setViewPort] = useState({
     width: "100%",
     height: 900,
     latitude: 0,
     longitude: 0,
-    zoom: 2
+    zoom: 2,
   });
   const layer = [
     new PathLayer({
       id: "path-layer",
       data,
-      getWidth: data => 7,
-      getColor: data => data.color,
-      widthMinPixels: 7
-    })
+      getWidth: (data) => 3,
+      getColor: (data) => data.color,
+      widthMinPixels: 3,
+    }),
   ];
 
-  console.log(data);
   return (
     <DeckGL
       initialViewState={{
         longitude: props.path[0][0],
         latitude: props.path[0][1],
-        zoom: 12
+        zoom: 12,
       }}
       controller={true}
       layers={layer} // layer here
-      style={{ position: "relative", width: "30vw", height: "30vw" }}
+      style={{ position: "relative", width: "25vw", height: "25vw" }}
     >
-      <StaticMap
-        mapStyle="mapbox://styles/mapbox/streets-v11"
-        mapboxApiAccessToken={TOKEN}
-      />
+      <StaticMap mapStyle="mapbox://styles/mapbox/dark-v10" mapboxApiAccessToken={TOKEN} />
     </DeckGL>
   );
 };

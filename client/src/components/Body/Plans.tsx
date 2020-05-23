@@ -3,35 +3,53 @@ import * as React from "react";
 export interface Plan {
   name: string;
   length: number;
-  intencity: string;
+  isActive: boolean;
+  type: string;
 }
 
-export default props => {
+export default (props) => {
   const plans: Array<Plan> = [
     {
-      name: "16 weeks Ironman 70.3 prep",
+      name: "ironman 70.3",
       length: 16,
-      intencity: "medium"
+      isActive: true,
+      type: "triathlon",
     },
     {
-      name: "24 weeks Ironman 70.3 prep",
+      name: "ironman 70.3",
       length: 24,
-      intencity: "low"
+      isActive: false,
+      type: "triathlon",
     },
     {
-      name: "12 weeks Ironman 70.3 prep",
-      length: 12,
-      intencity: "high"
-    }
+      name: "marathon",
+      length: 22,
+      isActive: false,
+      type: "running",
+    },
   ];
+
+  const iconMap = {
+    running: "images/shoe_icon.svg",
+    triathlon: "images/swim_icon.svg",
+  };
 
   const choosePlan = (planName: string) => {};
   return (
     <div className="plans">
-      {plans.map(p => (
+      <div className="plan">
+        <div className="newPlan">
+          <img style={{ width: "2vw", height: "2vw" }} src="images/plus.svg" />
+        </div>
+        <p style={{ color: "#3D425E" }}>add plan</p>
+      </div>
+      {plans.map((p) => (
         <div key={p.name} className="plan">
-          {p.name}
-          <img src="images/plan.jpg" />
+          <img style={{ width: "5vw", height: "5vw" }} src={iconMap[p.type]} />
+          <p className="planLabel">{p.name}</p>
+          <p className="planLabel" style={{ color: "#3D425E" }}>
+            {p.length} weeks{" "}
+          </p>
         </div>
       ))}
     </div>

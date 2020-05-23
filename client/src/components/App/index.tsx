@@ -5,7 +5,6 @@ import { useCookies } from "react-cookie";
 import { useGlobal, State, Actions } from "../../state";
 import { Body } from "../Body";
 import Header from "../Header";
-import Sidebar from "../Sidebar";
 
 require("./styles.scss");
 

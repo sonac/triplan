@@ -53,26 +53,29 @@ const buildMonthCalendar = () => {
   return Array.from({ length: month.length / 7 }, (_, i) => 0 + i).map((_, n) => month.slice(n * 7, (n + 1) * 7));
 };
 
+const month: string = moment().format("MMMM");
+const year: string = moment().format("YYYY");
+
 export default (props) => {
   const plannedActivities: Array<Activity> = [
     {
       activityType: "Cycling",
-      date: new Date(2020, 2, 7),
+      date: new Date(2020, 4, 7),
       description: "Ride 20 km",
     },
     {
       activityType: "Running",
-      date: new Date(2020, 2, 7),
+      date: new Date(2020, 4, 7),
       description: "Run 10 km Zone2",
     },
     {
       activityType: "Swimming",
-      date: new Date(2020, 2, 12),
+      date: new Date(2020, 4, 12),
       description: "Swim 1 km",
     },
     {
       activityType: "Cycling",
-      date: new Date(2020, 2, 16),
+      date: new Date(2020, 4, 16),
       description: "Ride 40 km",
     },
   ];
@@ -86,37 +89,46 @@ export default (props) => {
   );
 
   return (
-    <div className="calendar">
-      <table>
-        <caption>{moment().format("MMMM")}</caption>
-        <thead>
-          <tr>
-            {daysOfWeek.map((dayOfWeek) => (
-              <th key={dayOfWeek}>{dayOfWeek}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {buildMonthCalendar().map((week) => (
-            <tr key={week.toString()}>
-              {week.map((day) =>
-                plannedActivities.filter((activity) => activity.date.getTime() === day.getTime()).length > 0 ? (
-                  <td key={day.getDate()}>
-                    {day.getDate()}
-                    {plannedActivities
-                      .filter((activity) => activity.date.getTime() === day.getTime())
-                      .map((activity) => (
-                        <ActivityComponent activity={activity} />
-                      ))}
-                  </td>
-                ) : (
-                  <td key={day.getDate()}>{day.getDate()}</td>
-                )
-              )}
+    <div className="calendarContainer">
+      <div className="month">{month}</div>
+      <div className="year">{year}</div>
+      <img className="leftArrow" src="images/left_arrow.svg" />
+      <div className="calendar">
+        <table>
+          <thead>
+            <tr>
+              {daysOfWeek.map((dayOfWeek) => (
+                <th key={dayOfWeek}>
+                  <div className="dowContainer">{dayOfWeek}</div>
+                </th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {buildMonthCalendar().map((week) => (
+              <tr key={week.toString()}>
+                {week.map((day) =>
+                  plannedActivities.filter((activity) => activity.date.getTime() === day.getTime()).length > 0 ? (
+                    <td key={day.getDate()}>
+                      {day.getDate()}
+                      <div className="activitiesContainer">
+                        {plannedActivities
+                          .filter((activity) => activity.date.getTime() === day.getTime())
+                          .map((activity) => (
+                            <ActivityComponent activity={activity} />
+                          ))}
+                      </div>
+                    </td>
+                  ) : (
+                    <td key={day.getDate()}>{day.getDate()}</td>
+                  )
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <img className="rightArrow" src="images/left_arrow.svg" />
     </div>
   );
 };
