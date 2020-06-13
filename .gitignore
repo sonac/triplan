@@ -6,3 +6,5 @@ triData
 .vscode
 yarn.lock
 yarn-error.log
+private.key
+.env
