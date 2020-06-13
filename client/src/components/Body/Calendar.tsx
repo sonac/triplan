@@ -80,14 +80,6 @@ export default (props) => {
     },
   ];
 
-  buildMonthCalendar().forEach((week) =>
-    week.forEach((day) => {
-      console.log(day.toISOString());
-      console.log(plannedActivities[0].date.toISOString());
-      console.log(plannedActivities.filter((activity) => activity.date.getTime() === day.getTime()));
-    })
-  );
-
   return (
     <div className="calendarContainer">
       <div className="month">{month}</div>

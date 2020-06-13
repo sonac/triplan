@@ -1,10 +1,10 @@
 import * as React from "react";
-import { useState, useCallback } from "react";
-import { Switch, Route } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { Switch, Route, useLocation } from "react-router-dom";
 import * as Modal from "react-modal";
 import { useCookies } from "react-cookie";
 import Calendar from "./Calendar";
-import Plans from "./Plans";
+import Plans from "./AllPlans";
 import UserActivities from "./UserActivities";
 import { useGlobal, State, Actions } from "../../state";
 
@@ -42,10 +42,33 @@ export default (_) => {
   const [authInput, setAuth] = useState({ email: "", password: "" });
   const [isSendding, setIsSending] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["auth"]);
+  const location = useLocation();
+
+  if (location.pathname.includes("exchange-token")) {
+    const p: string = location.search;
+    const tokenString = p.substring(
+      p.lastIndexOf("code=") + 5,
+      p.lastIndexOf("&scope")
+    );
+    useEffect(() => {
+      fetch("/api/v1/user/strava-access-code", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + cookies.apiKey,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code: tokenString }),
+      }).then((res) => {
+        console.log(res);
+        window.location.href = "/my-activities";
+      });
+    });
+  }
 
   const sendAuth = useCallback(
     async (authType: string, authInput: AuthInput) => {
-      const authEndpoint = authType === "Sign Up" ? "register" : "login";
+      const authEndpoint = authType === "SIGN UP" ? "register" : "login";
+      console.log(authInput);
       if (isSendding) return;
       setIsSending(true);
       await fetch(`/api/v1/user/${authEndpoint}`, {
@@ -55,12 +78,13 @@ export default (_) => {
         },
         body: JSON.stringify(authInput),
       })
-        .then((resp) =>
+        .then((resp) => {
           resp.json().then((d) => {
             actions.authModalSwitch(null);
             setCookie("apiKey", d.apiKey);
-          })
-        )
+            window.location.href = "/my-activities";
+          });
+        })
         .catch((err) => console.error(err));
       setIsSending(false);
     },
@@ -106,10 +130,21 @@ export default (_) => {
             Error. Please fix your inputs
           </p>
           <div className="label">E-mail</div>
-          <input type="text" id="username" onChange={(e) => handleChange(e, "email")}></input>
+          <input
+            type="text"
+            id="username"
+            onChange={(e) => handleChange(e, "email")}
+          ></input>
           <div className="label">Password</div>
-          <input type="password" id="password" onChange={(e) => handleChange(e, "password")}></input>
-          <button id="submit" onClick={() => sendAuth(state.authModal, authInput)}>
+          <input
+            type="password"
+            id="password"
+            onChange={(e) => handleChange(e, "password")}
+          ></input>
+          <button
+            id="submit"
+            onClick={() => sendAuth(state.authModal, authInput)}
+          >
             {state.authModal}
           </button>
         </div>

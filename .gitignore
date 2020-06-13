@@ -1,37 +1,8 @@
-*.iml
-*.ipr
-*.iws
-.idea/
-target/
-*.log
-.DS_Store
-data/
-*.bloop
-*.metals
 
-# See https://help.github.com/ignore-files/ for more about ignoring files.
-
-# dependencies
-client/node_modules
-
-# testing
-client/coverage
-
-# production
-client/build
-
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-client/npm-debug.log*
-client/yarn-debug.log*
-client/yarn-error.log*
-client/.env
-
-heapdump*
-javacore*
-Snap*
+node_modules
+package-lock.json
+dist
+triData
+.vscode
+yarn.lock
+yarn-error.log

@@ -44,7 +44,10 @@ export default (props) => {
       layers={layer} // layer here
       style={{ position: "relative", width: "25vw", height: "25vw" }}
     >
-      <StaticMap mapStyle="mapbox://styles/mapbox/dark-v10" mapboxApiAccessToken={TOKEN} />
+      <StaticMap
+        mapStyle="mapbox://styles/mapbox/dark-v10"
+        mapboxApiAccessToken={TOKEN}
+      />
     </DeckGL>
   );
 };

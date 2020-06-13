@@ -28,7 +28,6 @@ export default (props) => {
       <div className="current">{page}</div>
       {state.user ? (
         <div className="authBlock">
-          <img src="images/runner.png" />
           <div className="logoutButton" onClick={() => removeCookie("auth")}>
             LOGOUT
           </div>

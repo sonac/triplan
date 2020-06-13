@@ -10,11 +10,11 @@ require("./styles.scss");
 
 export default (props) => {
   const [cookies, setCookie, removeCookie] = useCookies(["auth"]);
-  const [_, actions] = useGlobal<State, Actions>();
+  const [state, actions] = useGlobal<State, Actions>();
 
   if (cookies) {
     useEffect(() => {
-      fetch("/api/v1/user", {
+      fetch("/api/v1/user/validate", {
         method: "GET",
         headers: {
           Authorization: "Bearer " + cookies.apiKey,
@@ -23,13 +23,16 @@ export default (props) => {
         .then((resp) => {
           if (resp.status === 200) {
             resp.json().then((data) => {
+              console.log(data);
               actions.setUser(data);
             });
           } else {
             removeCookie("auth");
           }
         })
-        .catch((err) => console.error(err));
+        .catch((err) =>
+          console.error("Cought error during token validation" + err)
+        );
     }, []);
   }
 

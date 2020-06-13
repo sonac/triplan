@@ -29,9 +29,17 @@ export default (props) => {
       >
         {activity.activityType.toLocaleUpperCase()}
       </p>
-      <img className="icon" style={{ gridColumn: "1", gridRow: "3 / 3" }} src={iconMap[activity.activityType]} />
-      <p style={{ gridColumn: "2", gridRow: "1", alignSelf: "flex-end" }}>{activity.distance / 1000} km</p>
-      <p style={{ gridColumn: "3", gridRow: "1", alignSelf: "flex-end" }}>171 HR</p>
+      <img
+        className="icon"
+        style={{ gridColumn: "1", gridRow: "3 / 3" }}
+        src={iconMap[activity.activityType]}
+      />
+      <p style={{ gridColumn: "2", gridRow: "1", alignSelf: "flex-end" }}>
+        {Math.floor(activity.distance / 10) / 100} km
+      </p>
+      <p style={{ gridColumn: "3", gridRow: "1", alignSelf: "flex-end" }}>
+        171 HR
+      </p>
       <p style={{ gridColumn: "2", gridRow: "2" }}>5.49 m/km</p>
       <p style={{ gridColumn: "3", gridRow: "2" }}>29 m 26s</p>
       <p
@@ -47,7 +55,11 @@ export default (props) => {
         {moment(new Date(activity.startDate)).format("DD MMM")}
       </p>
       <div className="activityMap">
-        <Map path={polyline.decode(activity.mapPolyline).map((crds) => reverseCoordinatess(crds))} />
+        <Map
+          path={polyline
+            .decode(activity.mapPolyline)
+            .map((crds) => reverseCoordinatess(crds))}
+        />
       </div>
     </div>
   );
