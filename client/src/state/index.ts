@@ -1,6 +1,6 @@
 import * as React from "react";
 import globalHook, { Store } from "use-global-hook";
-import { IPlan } from "components/Body/Plans";
+import { IPlan } from "components/Body/AllPlans";
 
 export type State = {
   page: string;
