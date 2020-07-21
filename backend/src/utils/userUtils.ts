@@ -22,9 +22,11 @@ export const addDatesToActivities = (
   plan: IPlan
 ): ActivityWithDate[] => {
   let date = nextMonday(startDate);
+  //console.log(plan)
   // @ts-ignore
   return plan.trainings.flatMap((tw) => {
     const res = weekOfActivities(date, tw);
+    //console.log(res)
     date.setDate(date.getDate() + 7);
     return res;
   });
@@ -40,7 +42,6 @@ export const nextMonday = (date: Date): Date => {
 const weekOfActivities = (date: Date, week: IPlanWeek): ActivityWithDate[] => {
   const activities: ActivityWithDate[] = [];
   for (let i = 0; i < 7; i++) {
-    date.setDate(date.getDate() + i);
     const d = new Date(date);
     const dow: string = days[date.getDay()];
     // @ts-ignore
@@ -50,6 +51,7 @@ const weekOfActivities = (date: Date, week: IPlanWeek): ActivityWithDate[] => {
       date: d,
       description: stringifyTrainingDay(trainingDay),
     });
+    date.setDate(date.getDate() + 1);
   }
   return activities;
 };

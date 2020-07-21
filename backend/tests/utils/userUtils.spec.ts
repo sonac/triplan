@@ -1,6 +1,5 @@
 import { expect } from "chai";
 import { addDatesToActivities, nextMonday } from "../../src/utils/userUtils";
-import { IPlan } from "../../src/models/plan";
 
 describe("transforming plan to user activities", () => {
   it("should transform plan to list of dated user activities", () => {
@@ -61,13 +60,12 @@ describe("transforming plan to user activities", () => {
       ],
     };
     const startDate = new Date("2020-07-18");
-    const monday = new Date("2020-07-20");
-    const expected = [1, 2, 3];
+    const restDays = [new Date("2020-07-20"), new Date("2020-07-24")];
     expect(
       addDatesToActivities(startDate, somePlan).filter(
         (t) => t.description === "Rest"
-      )[0].date
-    ).to.eql(monday);
+      ).map(a => a.date)
+    ).to.eql(restDays);
   });
   it("should properly calculate next monday", () => {
     const date = new Date("2020-07-17");
