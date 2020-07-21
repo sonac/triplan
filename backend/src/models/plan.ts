@@ -47,7 +47,7 @@ const IntervalSchema: Schema = new Schema({
 const PlanDaySchema: Schema = new Schema({
   sessionName: { type: String, required: true },
   distance: { type: String, required: false },
-  intenrval: { type: IntervalSchema, required: false },
+  interval: { type: IntervalSchema, required: false },
   pace: { type: String, required: false },
   time: { type: String, required: false },
   intensity: { type: String, required: false },

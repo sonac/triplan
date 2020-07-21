@@ -6,7 +6,7 @@ import AllActivitesWithMap from "./AllActivitiesWithMap";
 
 export default (props) => {
   const [state, actions] = useGlobal<State, Actions>();
-  const [maps, setMaps] = useState(JSON.parse(localStorage.getItem('maps')));
+  const [maps, setMaps] = useState(JSON.parse(localStorage.getItem("maps")));
   const [url, setUrl] = useState("");
   const [cookies, setCookie, removeCookie] = useCookies(["auth"]);
 
@@ -18,7 +18,7 @@ export default (props) => {
 
   const handleClick = () => {
     window.location.href =
-      "http://www.strava.com/oauth/authorize?client_id=37166&response_type=code&approval_prompt=force&scope=read_all,activity:read_all&redirect_uri=http://localhost:9001/exchange-token";
+      "http://www.strava.com/oauth/authorize?client_id=37166&response_type=code&approval_prompt=force&scope=read_all,activity:read_all&redirect_uri=http://localhost:3000/exchange-token";
   };
 
   return (
@@ -41,23 +41,6 @@ export default (props) => {
             onClick={() => setUrl("/api/v1/user/fetch-activities")}
           >
             Refresh strava Activities
-          </div>
-          <div
-            className="connectToStrava"
-            style={{
-              textAlign: "center",
-              color: "white",
-              fontSize: "2em",
-              borderRadius: "5em",
-              backgroundColor: "#fc5200",
-              display: "flex",
-              justifyContent: "center",
-              marginLeft: "45vw",
-              marginRight: "45vw",
-            }}
-            onClick={() => handleClick()}
-          >
-            Connect to Strava
           </div>
           <AllActivitesWithMap />
         </div>

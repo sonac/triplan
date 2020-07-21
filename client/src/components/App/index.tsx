@@ -11,6 +11,7 @@ require("./styles.scss");
 export default (props) => {
   const [cookies, setCookie, removeCookie] = useCookies(["auth"]);
   const [state, actions] = useGlobal<State, Actions>();
+  console.log(cookies);
 
   if (cookies) {
     useEffect(() => {

@@ -2,11 +2,13 @@ import bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import fs from "fs";
 import { IUser, IStravaActivity, UserModel } from "../models/user";
+import { IPlan } from "../models/plan";
 import { getRefreshToken, getActivities } from "./strava";
 
 const privateKey = fs.readFileSync(__dirname + "/../../../private.key");
 
 const userFromToken = async (token: string): Promise<IUser> => {
+  console.log(token);
   const user = await UserModel.findOne({ authToken: token });
   if (!user) {
     throw new Error(`User with such token doesn't exist`);
@@ -56,7 +58,7 @@ export const login = async (
 };
 
 // TODO make smarted token validation, read on internet about that
-export const validateToken = async (token: string): Promise<IUser | null> =>
+export const validateToken = async (token: string): Promise<IUser> =>
   userFromToken(token);
 
 export const addStravaAccessCode = async (
@@ -104,4 +106,15 @@ export const getStravaActivities = async (token: string): Promise<IUser> => {
     throw new Error("Something went wrong during update!");
   }
   return updatedUser;
+};
+
+export const activatePlan = async (
+  token: string,
+  plan: IPlan
+): Promise<IUser> => {
+  await UserModel.findOneAndUpdate(
+    { authToken: token },
+    { activePlan: plan, planStartedDate: new Date() }
+  );
+  return await userFromToken(token);
 };

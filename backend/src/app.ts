@@ -8,12 +8,18 @@ import {
   getStravaActivities,
   addStravaAccessCode,
   updateRefreshToken,
+  activatePlan,
 } from "./services/user";
 import bodyParser from "body-parser";
 import { IncomingHttpHeaders } from "http";
 import { getRefreshToken } from "./services/strava";
-import { addPlan, getAllPlans } from "./services/plan";
-import console from "console";
+import {
+  addPlan,
+  getAllPlans,
+  getPlanByName,
+  deletePlanById,
+} from "./services/plan";
+import { addDatesToActivities } from "./utils/userUtils";
 
 const app = express();
 
@@ -53,6 +59,7 @@ app.post("/api/v1/user/register", (req, res) => {
 
 app.post("/api/v1/user/login", (req, res) => {
   const { email, password } = req.body;
+  console.log(req.body);
   login(email, password)
     .then((token) => {
       res.send(JSON.stringify({ apiKey: token }));
@@ -74,6 +81,10 @@ app.get("/api/v1/user/validate", (req, res) => {
           JSON.stringify({
             email: user.email,
             connectedToStrava: user.connectedToStrava,
+            activities:
+              user.planStartedDate && user.activePlan
+                ? addDatesToActivities(user.planStartedDate, user.activePlan)
+                : [],
           })
         );
       } else {
@@ -143,6 +154,25 @@ app.get("/api/v1/user/fetch-activities", (req, res) => {
   }
 });
 
+app.post("/api/v1/user/activate-plan", (req, res) => {
+  const token = hasToken(req.headers);
+  const plan = req.body;
+  if (!token) {
+    res.status(400).send("No token");
+  } else {
+    console.log(`Activating plan ` + plan.name);
+    activatePlan(token, plan)
+      .then((result) => {
+        console.log("Plan activated");
+        res.send(result);
+      })
+      .catch((err) => {
+        console.error("Error occured during plan activation " + err.message);
+        res.status(500).send(err.message);
+      });
+  }
+});
+
 app.post("/api/v1/plan", (req, res) => {
   addPlan(req.body)
     .then(() => {
@@ -164,6 +194,27 @@ app.get("/api/v1/plan/all", (req, res) => {
     .catch((e) => {
       console.error("Error retrieving plans " + e.message);
       res.status(500).send(e.message);
+    });
+});
+
+app.get("/api/v1/plan/:planName", (req, res) => {
+  getPlanByName(req.params.planName)
+    .then((plan) => {
+      console.log("Fetched plan " + plan.name);
+      res.send(JSON.stringify(plan));
+    })
+    .catch((err) => {
+      console.error(`There is an error occured during fetching ${err.message}`);
+      res.status(500).send(err.message);
+    });
+});
+
+app.delete("/api/v1/plan/:planId", (req, res) => {
+  deletePlanById(req.params.planId)
+    .then(() => res.send("Plan deleted"))
+    .catch((err) => {
+      console.error("Error happned during deletion of plan " + err.message);
+      res.status(500).send(err.message);
     });
 });
 

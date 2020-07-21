@@ -74,7 +74,7 @@ describe("json to interface", () => {
           "hasKudoed":false
       }`;
     const parsedActivity = jsonToStravaActivity(JSON.parse(data));
-    const expected: IStravaActivity = {
+    const expected = {
       id: 123123123,
       distance: 123.1,
       movingTime: 4020,
@@ -225,7 +225,8 @@ describe("json to interface", () => {
     const parsedActivities = JSON.parse(data).map((activity: object) =>
       jsonToStravaActivity(activity)
     );
-    const expected: IStravaActivity[] = [
+    // @ts-ignore
+    const expected = [
       {
         id: 123123123,
         distance: 123.1,

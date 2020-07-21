@@ -8,18 +8,18 @@ td {
   border: 1px solid black;
 }
 
-table {
+.calendar table {
   border-collapse: collapse;
   border-style: hidden;
 }
 
-th {
+.calendar th {
   height: 6vw;
   width: 6vw;
   vertical-align: bottom;
 }
 
-td {
+.calendar td {
   font-family: "Soulmaze Brush";
   font-size: 2em;
   height: 8vw;
@@ -29,17 +29,22 @@ td {
   color: #2b2f48;
 }
 
-table tr:first-child td {
+.calendar table tr:first-child td {
   border-top: 0;
 }
-table tr td:first-child {
+.calendar table tr td:first-child {
   border-left: 0;
 }
-table tr:last-child td {
+.calendar table tr:last-child td {
   border-bottom: 0;
 }
-table tr td:last-child {
+.calendar table tr td:last-child {
   border-right: 0;
+}
+
+.planDetails td,
+th {
+  padding: 3em;
 }
 
 .calendarContainer {
@@ -49,6 +54,22 @@ table tr td:last-child {
 }
 
 .calendar {
+  width: 58vw;
+  box-shadow: inset 4px 4px 16px #2b2834, inset -4px -4px 16px #0c0c0c;
+  border-radius: 20px;
+  grid-column-start: 3;
+  grid-column-end: 5;
+  grid-row-start: 2;
+  grid-row-end: 5;
+}
+
+.planContainer {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr 7fr 0.5fr 1fr;
+  grid-template-rows: 1fr 3fr 1fr 3fr;
+}
+
+.planDetails {
   width: 58vw;
   box-shadow: inset 4px 4px 16px #2b2834, inset -4px -4px 16px #0c0c0c;
   border-radius: 20px;
@@ -97,6 +118,10 @@ table tr td:last-child {
   margin-right: 1em;
 }
 
+.leftArrow:hover {
+  cursor: pointer;
+}
+
 .rightArrow {
   grid-column-start: 4;
   grid-column-end: 5;
@@ -114,6 +139,10 @@ table tr td:last-child {
   justify-self: left;
   transform: rotate(180deg);
   margin-left: 1em;
+}
+
+.rightArrow:hover {
+  cursor: pointer;
 }
 
 .dowContainer {
@@ -171,6 +200,10 @@ img {
   box-shadow: inset 2px 2px 8px #2b2834, inset -2px -2px 8px #0c0c0c;
   border-radius: 1em;
   color: white;
+}
+
+.plan:hover {
+  cursor: pointer;
 }
 
 .planLabel {
@@ -269,5 +302,20 @@ p {
 }
 
 .connectToStrava:hover {
+  cursor: pointer;
+}
+
+.startPlanButton {
+  color: white;
+  background-color: green;
+  box-shadow: inset 1px 1px 2px #2b2834, inset -1px -1px 2px #0c0c0c;
+  font-size: 2em;
+  width: 15%;
+  padding: 1em;
+  margin-left: 65%;
+  border-radius: 2em;
+}
+
+.startPlanButton:hover {
   cursor: pointer;
 }

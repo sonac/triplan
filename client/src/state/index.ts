@@ -1,6 +1,7 @@
 import * as React from "react";
 import globalHook, { Store } from "use-global-hook";
 import { IPlan } from "components/Body/AllPlans";
+import { Activity } from "components/Body/Activity";
 
 export type State = {
   page: string;
@@ -55,5 +56,6 @@ export const useGlobal = globalHook<State, Actions>(
 export interface User {
   email: string;
   connectedToStrava: Boolean;
+  activities: Array<Activity>;
   createdOn: string;
 }

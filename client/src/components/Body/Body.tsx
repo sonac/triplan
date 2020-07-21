@@ -7,6 +7,7 @@ import Calendar from "./Calendar";
 import Plans from "./AllPlans";
 import UserActivities from "./UserActivities";
 import { useGlobal, State, Actions } from "../../state";
+import Plan from "./Plan";
 
 require("./styles.scss");
 
@@ -81,7 +82,8 @@ export default (_) => {
         .then((resp) => {
           resp.json().then((d) => {
             actions.authModalSwitch(null);
-            setCookie("apiKey", d.apiKey);
+            removeCookie("apiKey");
+            setCookie("apiKey", d.apiKey, { path: "/", sameSite: true });
             window.location.href = "/my-activities";
           });
         })
@@ -111,6 +113,7 @@ export default (_) => {
         <Route path="/my-activities">
           <UserActivities />
         </Route>
+        <Route path="/plan/:planName" children={<Plan />} />
         <Route path="/">
           <div>hey body</div>
         </Route>
