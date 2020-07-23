@@ -18,19 +18,16 @@ const getCurrentYear = () => {
   return moment().year();
 };
 
-const getMonth = (monthIdx: number) => {
-  return moment().month(monthIdx);
-};
-
 const getMonthDays = (
-  month: number,
+  yearIdx: number,
+  monthIdx: number,
   fromDay: number = 1,
-  amountOfDays: number = moment().month(month).daysInMonth()
-) => {
+  amountOfDays: number = moment().month(monthIdx).daysInMonth()
+): Array<Date> => {
   return Array.from(
     { length: Math.max(amountOfDays - (fromDay - 1), 0) },
     (_, i) => fromDay + i
-  ).map((day) => new Date(moment().year(), month, day));
+  ).map((day) => new Date(yearIdx, monthIdx, day));
 };
 
 // Previous month from January is December
@@ -38,35 +35,35 @@ const safeMonthSubstraction = (monthIdx: number): number =>
   monthIdx === 0 ? 11 : monthIdx - 1;
 
 // Calculate how many days from previous month we need to take to fill first week
-const getLeftoverDaysFromPrevMonth = (monthIdx: number, dayOfWeek: number) => {
+  const getLeftoverDaysFromPrevMonth = (yearIdx: number, monthIdx: number, dayOfWeek: number): Array<Date> => {
   const fromDay: number =
     moment().month(safeMonthSubstraction(monthIdx)).daysInMonth() -
     dayOfWeek +
     1;
-  const days: Array<Date> = getMonthDays(moment().month() - 1, fromDay);
+  const days: Array<Date> = getMonthDays(yearIdx, monthIdx - 1, fromDay);
   return days;
 };
 
-const buildMonthCalendar = (monthIdx: number) => {
+const buildMonthCalendar = (monthIdx: number, yearIdx: number): Array<Array<Date>> => {
   const firstDayOfMonth =
-    moment().year(getCurrentYear()).month(monthIdx).date(1).isoWeekday() - 1;
+    moment().year(yearIdx).month(monthIdx).date(1).isoWeekday() - 1;
   const lastDayOfMonth =
     moment()
       .year(getCurrentYear())
       .month(monthIdx)
       .date(moment().month(monthIdx).daysInMonth())
       .isoWeekday() - 1;
-  const prevMonthDays = getLeftoverDaysFromPrevMonth(monthIdx, firstDayOfMonth);
-  const thisMonthDays = getMonthDays(monthIdx);
-  const nextMonthDays = getMonthDays(monthIdx + 1, 1, 6 - lastDayOfMonth);
+  const prevMonthDays = getLeftoverDaysFromPrevMonth(yearIdx, monthIdx, firstDayOfMonth);
+  const thisMonthDays = getMonthDays(yearIdx, monthIdx);
+  const nextMonthDays = getMonthDays(yearIdx, monthIdx + 1, 1, 6 - lastDayOfMonth);
   const month = prevMonthDays.concat(thisMonthDays).concat(nextMonthDays);
   return Array.from({ length: month.length / 7 }, (_, i) => 0 + i).map((_, n) =>
     month.slice(n * 7, (n + 1) * 7)
   );
 };
 
-export default (props) => {
-  const [state, actions] = useGlobal<State, Actions>();
+export default () => {
+  const [state, ] = useGlobal<State, Actions>();
   const [monthIdx, setMonth] = useState(moment().month());
   const [yearIdx, setYear] = useState(moment().year());
 
@@ -90,10 +87,12 @@ export default (props) => {
   };
 
   const plannedActivities: Array<Activity> = state.user
-    ? state.user.activities.map((activity) => {
+    ? state.user.activities.map((activity: any) => {
         return { ...activity, date: new Date(activity.date) };
       })
     : [];
+  console.log(buildMonthCalendar(monthIdx, yearIdx));
+  console.log(plannedActivities);
   return (
     <div className="calendarContainer">
       <div className="month">{month}</div>
@@ -115,20 +114,11 @@ export default (props) => {
             </tr>
           </thead>
           <tbody>
-            {buildMonthCalendar(monthIdx).map((week) => (
+            {buildMonthCalendar(monthIdx, yearIdx).map((week) => (
               <tr className="calendarTR" key={week.toString()}>
                 {week.map((day) => {
-                  console.log(
-                    moment().year(yearIdx).month(monthIdx).day(day.getDate())
-                  );
-                  console.log(plannedActivities);
                   const filteredActivities = plannedActivities.filter(
-                    (activity) =>
-                      moment()
-                        .year(yearIdx)
-                        .month(monthIdx)
-                        .day(day.getDate())
-                        .isSame(activity.date, "day")
+                    (activity) => moment(activity.date).isSame(day, 'day')
                   );
                   return filteredActivities.length > 0 ? (
                     <td className="calendarTD" key={day.getDate()}>

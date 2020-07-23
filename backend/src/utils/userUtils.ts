@@ -25,9 +25,8 @@ export const addDatesToActivities = (
   //console.log(plan)
   // @ts-ignore
   return plan.trainings.flatMap((tw) => {
+    // date is reference and all mutation in the function underneath affecting it
     const res = weekOfActivities(date, tw);
-    //console.log(res)
-    date.setDate(date.getDate() + 7);
     return res;
   });
 };

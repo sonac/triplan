@@ -57,10 +57,58 @@ describe("transforming plan to user activities", () => {
             intensity: "9/10",
           },
         },
+        {
+          monday: {
+            sessionName: "Rest",
+          },
+          tuesday: {
+            sessionName: "Speedwork",
+            distance: "4M",
+            interval: {
+              fastDistance: 600,
+              restDistance: 200,
+              amount: 4,
+            },
+            pace: "10K",
+            time: "40",
+            intencity: "8/10",
+          },
+          wednesday: {
+            sessionName: "Steady",
+            distance: "4M",
+            pace: "9:45/Mile",
+            time: "39",
+            intensity: "6/10",
+          },
+          thursday: {
+            sessionName: "Fartlek",
+            distance: "4M",
+            pace: "10:00/Mile",
+            time: "40",
+            intensity: "7/10",
+          },
+          friday: {
+            sessionName: "Easy",
+            distance: "3M",
+            pace: "11:00",
+            time: "33",
+            intensity: "4/10",
+          },
+          saturday: {
+            sessionName: "Rest",
+          },
+          sunday: {
+            sessionName: "Race",
+            distance: "10K",
+            pace: "9:00",
+            time: "55",
+            intensity: "9/10",
+          },
+        },
       ],
     };
     const startDate = new Date("2020-07-18");
-    const restDays = [new Date("2020-07-20"), new Date("2020-07-24")];
+    const restDays = [new Date("2020-07-20"), new Date("2020-07-24"), new Date("2020-07-27"), new Date("2020-08-01")];
     expect(
       addDatesToActivities(startDate, somePlan).filter(
         (t) => t.description === "Rest"
