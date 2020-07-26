@@ -37,6 +37,11 @@ export default (props) => {
     <div className="allActivitiesWithMap">
       {activities
         .filter((a) => a.mapPolyline.length > 0)
+        .sort(
+          (a, b) =>
+            new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+        )
+        .reverse()
         .slice(0, 5)
         .map((activity) => (
           <ActivityWithMap key={activity.id} activity={activity} />

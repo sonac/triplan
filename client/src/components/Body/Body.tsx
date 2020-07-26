@@ -119,6 +119,15 @@ export default (_) => {
         </Route>
       </Switch>
       <Modal
+        isOpen={state.activityModal !== null}
+        onRequestClose={() => actions.activityModalSwitch(null)}
+        style={customStyles}
+      >
+        <div className="activityModal">
+          {state.activityModal ? state.activityModal.description : ""}
+        </div>
+      </Modal>
+      <Modal
         isOpen={state.authModal !== null}
         onRequestClose={() => actions.authModalSwitch(null)}
         style={customStyles}

@@ -83,6 +83,7 @@ export const updateRefreshToken = async (
 };
 
 export const getStravaActivities = async (token: string): Promise<IUser> => {
+  console.log(token);
   let user: IUser | null = await userFromToken(token);
   if (!user.stravaToken) {
     const token = await getRefreshToken(user.stravaAcccessCode);

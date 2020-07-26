@@ -129,6 +129,7 @@ app.post("/api/v1/user/strava-access-code", (req, res) => {
 });
 
 app.get("/api/v1/user/fetch-activities", (req, res) => {
+  console.log(req.headers);
   const token = hasToken(req.headers);
   if (!token) {
     res.status(400).send("No token");

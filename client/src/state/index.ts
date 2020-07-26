@@ -6,6 +6,7 @@ import { Activity } from "components/Body/Activity";
 export type State = {
   page: string;
   authModal: null | string;
+  activityModal: null | Activity;
   user: null | User;
   plans: IPlan[] | null;
 };
@@ -13,6 +14,7 @@ export type State = {
 export type Actions = {
   changePage: (page: string) => void;
   authModalSwitch: () => void;
+  activityModalSwitch: () => void;
   setUser: () => void;
   setPlans: (plans: IPlan[]) => void;
 };
@@ -25,6 +27,10 @@ const authModalSwitch = (store: Store<State, Actions>, authAction: string) => {
   store.setState({ ...store.state, authModal: authAction });
 };
 
+const activityModalSwitch = (store: Store<State, Actions>, activityAction: Activity) => {
+  store.setState({ ...store.state, activityModal: activityAction})
+}
+
 const setUser = (store: Store<State, Actions>, user: User) => {
   store.setState({ ...store.state, user: user });
 };
@@ -36,6 +42,7 @@ const setPlans = (store: Store<State, Actions>, plans: IPlan[]) => {
 const initialState: State = {
   page: "MY PLAN",
   authModal: null,
+  activityModal: null,
   user: null,
   plans: null,
 };
@@ -43,6 +50,7 @@ const initialState: State = {
 export const actions = {
   changePage,
   authModalSwitch,
+  activityModalSwitch,
   setUser,
   setPlans,
 };
