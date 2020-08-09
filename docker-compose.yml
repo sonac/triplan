@@ -13,6 +13,8 @@ services:
       - mongodb
     networks:
       - app-network
+    ports:
+      - "8080:8080"
   mongodb:
     image: mongo:latest
     container_name: mongodb
@@ -21,7 +23,7 @@ services:
       - .env
     volumes:
       - ./backend/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-      - ./backend/triData:/data/db
+      - ./triData:/data/db
     networks:
       - app-network
   webserver:
