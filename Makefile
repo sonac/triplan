@@ -13,3 +13,4 @@ publish: docker-login build-docker
 
 pull: docker-login
 	docker pull docker.pkg.github.com/sonac/triplan/triplan:0.1.0
+	docker tag docker.pkg.github.com/sonac/triplan/triplan triplan
