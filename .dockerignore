@@ -1,0 +1,12 @@
+backend/node_modules
+client/node_modules
+package-lock.json
+dist
+triData
+.vscode
+backend/yarn.lock
+backend/yarn-error.log
+client/yarn.lock
+client/yarn-error.log
+.env
+build
