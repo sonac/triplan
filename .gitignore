@@ -11,5 +11,4 @@ client/yarn-error.log
 private.key
 .env
 build
-.dockerignore
 .localenv
