@@ -8,7 +8,5 @@ backend/yarn.lock
 backend/yarn-error.log
 client/yarn.lock
 client/yarn-error.log
-private.key
 .env
 build
-.localenv
