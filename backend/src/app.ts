@@ -1,3 +1,4 @@
+import path from "path";
 import express from "express";
 import cors from "cors";
 import {
@@ -32,9 +33,10 @@ const hasToken = (headers: IncomingHttpHeaders): string | undefined => {
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "../build")));
 
-app.get("/", (req, res) => {
-  res.send("Welcome to Triplan!");
+app.get("/", (_, res) => {
+  res.sendFile(path.join(__dirname, "../build", "index.html"));
 });
 
 app.get("/api/v1/users", (req, res) => {
@@ -217,6 +219,10 @@ app.delete("/api/v1/plan/:planId", (req, res) => {
       console.error("Error happned during deletion of plan " + err.message);
       res.status(500).send(err.message);
     });
+});
+
+app.get("*", (_, res) => {
+  res.sendFile(path.join(__dirname, "../build", "index.html"));
 });
 
 export default app;
