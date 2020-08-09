@@ -5,7 +5,15 @@ import { IUser, IStravaActivity, UserModel } from "../models/user";
 import { IPlan } from "../models/plan";
 import { getRefreshToken, getActivities } from "./strava";
 
-const privateKey = fs.readFileSync(__dirname + "/../../../private.key");
+const keyPath = (): string => {
+  const path = process.env.PRIVATE_KEY_PATH;
+  if (!path) {
+    throw new Error("Private key path is not set");
+  }
+  return path;
+};
+
+const privateKey = fs.readFileSync(keyPath());
 
 const userFromToken = async (token: string): Promise<IUser> => {
   console.log(token);

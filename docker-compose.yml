@@ -1,0 +1,65 @@
+version: "3.7"
+
+services:
+  app:
+    build: .
+    container_name: triplan
+    restart: always
+    env_file:
+      - .env
+    command: >
+      sh -c 'dockerize -wait tcp://mongodb:27017 -timeout 60s && node dist/server.js'
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./backend/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./backend/triData:/data/db
+    networks:
+      - app-network
+  webserver:
+    image: nginx:mainline-alpine
+    container_name: webserver
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - web-root:/var/www/html
+      - ./nginx-conf:/etc/nginx/conf.d
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+    depends_on:
+      - app
+    networks:
+      - app-network
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
+    depends_on:
+      - app
+    command: certonly --webroot --webroot-path=/var/www/html --email sonag007@gmail.com --agree-tos --no-eff-email --staging -d triplan.club  -d www.triplan.club
+
+volumes:
+  certbot-etc:
+  certbot-var:
+  web-root:
+    driver: local
+    driver_opts:
+      type: none
+      device: /Users/andriisumko/git/triplan/client/public/
+      o: bind
+
+networks:
+  app-network:
+    driver: bridge
