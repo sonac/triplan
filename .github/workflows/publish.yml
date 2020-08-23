@@ -10,4 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: build and publish
-        run: make publish
+        run: |
+          make ci-docker-login  
+          make publish

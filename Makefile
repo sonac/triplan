@@ -7,7 +7,10 @@ build-docker: build
 docker-login:
 	cat ~/.git_token | docker login https://docker.pkg.github.com -u sonac --password-stdin
 
-publish: docker-login build-docker
+ci-docker-login:
+	docker login https://docker.pkg.github.com -u sonac --password ${{ secrets.GITHUB_TOKEN }}
+
+publish: build-docker
 	docker tag triplan docker.pkg.github.com/sonac/triplan/triplan:0.1.0
 	docker push docker.pkg.github.com/sonac/triplan/triplan:0.1.0
 
