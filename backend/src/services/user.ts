@@ -16,7 +16,6 @@ const keyPath = (): string => {
 const privateKey = fs.readFileSync(keyPath());
 
 const userFromToken = async (token: string): Promise<IUser> => {
-  console.log(token);
   const user = await UserModel.findOne({ authToken: token });
   if (!user) {
     throw new Error(`User with such token doesn't exist`);

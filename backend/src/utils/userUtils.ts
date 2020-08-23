@@ -21,8 +21,7 @@ export const addDatesToActivities = (
   startDate: Date,
   plan: IPlan
 ): ActivityWithDate[] => {
-  let date = nextMonday(startDate);
-  //console.log(plan)
+  const date = nextMonday(startDate);
   // @ts-ignore
   return plan.trainings.flatMap((tw) => {
     // date is reference and all mutation in the function underneath affecting it
