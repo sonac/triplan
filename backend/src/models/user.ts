@@ -18,7 +18,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   createdOn: Date;
-  connectedToStrava: Boolean;
+  connectedToStrava: boolean;
   authToken: string;
   stravaToken: string;
   stravaAcccessCode: string;

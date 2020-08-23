@@ -3,7 +3,8 @@ import * as jwt from "jsonwebtoken";
 import fs from "fs";
 import { IUser, IStravaActivity, UserModel } from "../models/user";
 import { IPlan } from "../models/plan";
-import { getRefreshToken, getActivities } from "./strava";
+import { getAuthCode, getActivities } from "./strava";
+import { logger } from "../app";
 
 const keyPath = (): string => {
   const path = process.env.PRIVATE_KEY_PATH;
@@ -48,20 +49,20 @@ export const login = async (
   email: string,
   password: string
 ): Promise<string> => {
-  const user = await UserModel.findOne({ email: email });
+  const user = await UserModel.findOne({ email });
   if (!user) {
     throw new Error(`User doesn't exist`);
   }
-  const pwdCheck: Boolean = await bcrypt.compare(password, user.password);
+  const pwdCheck: boolean = await bcrypt.compare(password, user.password);
   if (!pwdCheck) {
     throw new Error(`Password does'nt match`);
   }
-  const token = jwt.sign(
+  const authToken = jwt.sign(
     { exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, data: user.email },
     privateKey
   );
-  await UserModel.findOneAndUpdate({ email: email }, { authToken: token });
-  return token;
+  await UserModel.findOneAndUpdate({ email }, { authToken });
+  return authToken;
 };
 
 // TODO make smarted token validation, read on internet about that
@@ -83,21 +84,15 @@ export const updateRefreshToken = async (
   stravaToken: string,
   authToken: string
 ): Promise<void> => {
-  await UserModel.findOneAndUpdate(
-    { authToken: authToken },
-    { stravaToken: stravaToken }
-  );
+  await UserModel.findOneAndUpdate({ authToken }, { stravaToken });
 };
 
 export const getStravaActivities = async (token: string): Promise<IUser> => {
-  console.log(token);
   let user: IUser | null = await userFromToken(token);
   if (!user.stravaToken) {
-    const token = await getRefreshToken(user.stravaAcccessCode);
-    await UserModel.findByIdAndUpdate(
-      { email: user.email },
-      { stravaToken: token }
-    );
+    const stravaToken = await getAuthCode(user.stravaAcccessCode);
+    logger.info(`Updating user token`);
+    await UserModel.findByIdAndUpdate({ email: user.email }, { stravaToken });
     user = await UserModel.findOne({ email: user.email });
     if (!user) {
       throw new Error("Something went wrong, please retry");
@@ -109,7 +104,7 @@ export const getStravaActivities = async (token: string): Promise<IUser> => {
     { stravaActivities: activities }
   );
   const updatedUser = await UserModel.findOne({ email: user.email });
-  console.log("User activities were updated and user was fetched");
+  logger.info("User activities were updated and user was fetched");
   if (!updatedUser) {
     throw new Error("Something went wrong during update!");
   }

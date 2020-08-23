@@ -14,7 +14,7 @@ import {
 } from "./services/user";
 import bodyParser from "body-parser";
 import { IncomingHttpHeaders } from "http";
-import { getRefreshToken } from "./services/strava";
+import { getAuthCode } from "./services/strava";
 import {
   addPlan,
   getAllPlans,
@@ -25,14 +25,14 @@ import { addDatesToActivities } from "./utils/userUtils";
 
 export const logger = pino({
   name: "triplan",
-  level: process.env["LOG_LEVEL"] || "info",
+  level: process.env.LOG_LEVEL || "info",
   prettyPrint: true,
 });
 
 const app = express();
 
 const hasToken = (headers: IncomingHttpHeaders): string | undefined => {
-  const bearer = headers["authorization"];
+  const bearer = headers.authorization;
   if (bearer) {
     return bearer.split(" ")[1];
   }
@@ -68,7 +68,7 @@ app.post("/api/v1/user/register", (req, res) => {
 
 app.post("/api/v1/user/login", (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
+  logger.info(req.body);
   login(email, password)
     .then((token) => {
       res.send(JSON.stringify({ apiKey: token }));
@@ -110,7 +110,7 @@ app.post("/api/v1/user/strava-access-code", (req, res) => {
   } else {
     addStravaAccessCode(req.body.code, token)
       .then(() => {
-        getRefreshToken(req.body.code)
+        getAuthCode(req.body.code)
           .then((stravaToken) => {
             if (stravaToken) {
               updateRefreshToken(stravaToken, token)
@@ -138,7 +138,7 @@ app.post("/api/v1/user/strava-access-code", (req, res) => {
 });
 
 app.get("/api/v1/user/fetch-activities", (req, res) => {
-  console.log(req.headers);
+  logger.info(req.headers);
   const token = hasToken(req.headers);
   if (!token) {
     res.status(400).send("No token");
@@ -170,10 +170,10 @@ app.post("/api/v1/user/activate-plan", (req, res) => {
   if (!token) {
     res.status(400).send("No token");
   } else {
-    console.log(`Activating plan ` + plan.name);
+    logger.info(`Activating plan ` + plan.name);
     activatePlan(token, plan)
       .then((result) => {
-        console.log("Plan activated");
+        logger.info("Plan activated");
         res.send(result);
       })
       .catch((err) => {
@@ -186,7 +186,7 @@ app.post("/api/v1/user/activate-plan", (req, res) => {
 app.post("/api/v1/plan", (req, res) => {
   addPlan(req.body)
     .then(() => {
-      console.log("Adding plan request was processed");
+      logger.info("Adding plan request was processed");
       res.send("Plan added successfully");
     })
     .catch((e) => {
@@ -198,7 +198,7 @@ app.post("/api/v1/plan", (req, res) => {
 app.get("/api/v1/plan/all", (req, res) => {
   getAllPlans()
     .then((plans) => {
-      console.log("Plans retrieved");
+      logger.info("Plans retrieved");
       res.send(JSON.stringify(plans));
     })
     .catch((e) => {
@@ -210,7 +210,7 @@ app.get("/api/v1/plan/all", (req, res) => {
 app.get("/api/v1/plan/:planName", (req, res) => {
   getPlanByName(req.params.planName)
     .then((plan) => {
-      console.log("Fetched plan " + plan.name);
+      logger.info("Fetched plan " + plan.name);
       res.send(JSON.stringify(plan));
     })
     .catch((err) => {
