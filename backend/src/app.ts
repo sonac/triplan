@@ -1,6 +1,7 @@
 import path from "path";
 import express from "express";
 import cors from "cors";
+import pino from "pino";
 import {
   getUsers,
   register,
@@ -21,6 +22,12 @@ import {
   deletePlanById,
 } from "./services/plan";
 import { addDatesToActivities } from "./utils/userUtils";
+
+export const logger = pino({
+  name: "triplan",
+  level: process.env["LOG_LEVEL"] || "info",
+  prettyPrint: true,
+});
 
 const app = express();
 
