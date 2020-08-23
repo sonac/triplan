@@ -12,5 +12,7 @@ jobs:
       - uses: actions/setup-node@v1
       - name: build and publish
         run: |
+          yarn --cwd client install
+          yarn --cwd backend install
           make ci-docker-login  
           make publish
