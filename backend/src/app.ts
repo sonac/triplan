@@ -74,7 +74,7 @@ app.post("/api/v1/user/login", (req, res) => {
       res.send(JSON.stringify({ apiKey: token }));
     })
     .catch((e) => {
-      console.error(e);
+      logger.error(e);
       res.status(400).send(e.message);
     });
 });
@@ -116,7 +116,7 @@ app.post("/api/v1/user/strava-access-code", (req, res) => {
               updateRefreshToken(stravaToken, token)
                 .then(() => res.send("Code added"))
                 .catch((err) => {
-                  console.error(
+                  logger.error(
                     "Error happened during strava token update " + err.message
                   );
                   res.status(500).send("Token update error");
@@ -124,14 +124,14 @@ app.post("/api/v1/user/strava-access-code", (req, res) => {
             }
           })
           .catch((err) => {
-            console.error(
+            logger.error(
               "Error happened during strava token fetch " + err.message
             );
             res.status(500).send("Strava API call error");
           });
       })
       .catch((err) => {
-        console.error(err.message);
+        logger.error(err.message);
         res.status(400).send(err.message);
       });
   }
@@ -158,7 +158,7 @@ app.get("/api/v1/user/fetch-activities", (req, res) => {
         }
       })
       .catch((err) => {
-        console.error(err.message);
+        logger.error(err.message);
         res.status(400).send(err.message);
       });
   }
@@ -177,7 +177,7 @@ app.post("/api/v1/user/activate-plan", (req, res) => {
         res.send(result);
       })
       .catch((err) => {
-        console.error("Error occured during plan activation " + err.message);
+        logger.error("Error occured during plan activation " + err.message);
         res.status(500).send(err.message);
       });
   }
@@ -190,7 +190,7 @@ app.post("/api/v1/plan", (req, res) => {
       res.send("Plan added successfully");
     })
     .catch((e) => {
-      console.error("Error while adding plan" + e);
+      logger.error("Error while adding plan" + e);
       res.status(400).send(e);
     });
 });
@@ -202,7 +202,7 @@ app.get("/api/v1/plan/all", (req, res) => {
       res.send(JSON.stringify(plans));
     })
     .catch((e) => {
-      console.error("Error retrieving plans " + e.message);
+      logger.error("Error retrieving plans " + e.message);
       res.status(500).send(e.message);
     });
 });
@@ -214,7 +214,7 @@ app.get("/api/v1/plan/:planName", (req, res) => {
       res.send(JSON.stringify(plan));
     })
     .catch((err) => {
-      console.error(`There is an error occured during fetching ${err.message}`);
+      logger.error(`There is an error occured during fetching ${err.message}`);
       res.status(500).send(err.message);
     });
 });
@@ -223,7 +223,7 @@ app.delete("/api/v1/plan/:planId", (req, res) => {
   deletePlanById(req.params.planId)
     .then(() => res.send("Plan deleted"))
     .catch((err) => {
-      console.error("Error happned during deletion of plan " + err.message);
+      logger.error("Error happned during deletion of plan " + err.message);
       res.status(500).send(err.message);
     });
 });
