@@ -7,13 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Install
-        uses: CultureHQ/actions-yarn@master
-        working-directory: backend
+      - uses: actions/setup-node@v1
         with:
-          args: install
+          node-version: "12"
+      - name: Install
+        working-directory: backend
         run: yarn install
       - name: Test
-        uses: CultureHQ/actions-yarn@master
-        with:
-          args: test
+        working-directory: backend
+        run: yarn test
