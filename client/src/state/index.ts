@@ -27,16 +27,19 @@ const authModalSwitch = (store: Store<State, Actions>, authAction: string) => {
   store.setState({ ...store.state, authModal: authAction });
 };
 
-const activityModalSwitch = (store: Store<State, Actions>, activityAction: Activity) => {
-  store.setState({ ...store.state, activityModal: activityAction})
-}
+const activityModalSwitch = (
+  store: Store<State, Actions>,
+  activityAction: Activity
+) => {
+  store.setState({ ...store.state, activityModal: activityAction });
+};
 
 const setUser = (store: Store<State, Actions>, user: User) => {
-  store.setState({ ...store.state, user: user });
+  store.setState({ ...store.state, user });
 };
 
 const setPlans = (store: Store<State, Actions>, plans: IPlan[]) => {
-  store.setState({ ...store.state, plans: plans });
+  store.setState({ ...store.state, plans });
 };
 
 const initialState: State = {
@@ -63,7 +66,7 @@ export const useGlobal = globalHook<State, Actions>(
 
 export interface User {
   email: string;
-  connectedToStrava: Boolean;
-  activities: Array<Activity>;
+  connectedToStrava: boolean;
+  activities: Activity[];
   createdOn: string;
 }

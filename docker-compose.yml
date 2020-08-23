@@ -2,8 +2,7 @@ version: "3.7"
 
 services:
   app:
-    build: .
-    container_name: triplan
+    image: triplan
     restart: always
     env_file:
       - .env

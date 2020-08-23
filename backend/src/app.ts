@@ -68,7 +68,7 @@ app.post("/api/v1/user/register", (req, res) => {
 
 app.post("/api/v1/user/login", (req, res) => {
   const { email, password } = req.body;
-  logger.info(req.body);
+  logger.info(`User ${email} tries to login`);
   login(email, password)
     .then((token) => {
       res.send(JSON.stringify({ apiKey: token }));

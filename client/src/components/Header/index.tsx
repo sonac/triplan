@@ -3,8 +3,7 @@ import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useHistory, Link } from "react-router-dom";
 import { useGlobal, State, Actions } from "../../state";
-
-require("./styles.scss");
+import "./styles.scss";
 
 export const toKebab = (text: string) => {
   return text.toLocaleLowerCase().replace(/ /g, "-");
