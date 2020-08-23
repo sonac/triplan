@@ -6,7 +6,7 @@ import { PathLayer } from "@deck.gl/layers";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
-const TOKEN = process.env["REACT_APP_DECK_TOKEN"];
+const TOKEN = process.env.REACT_APP_DECK_TOKEN;
 
 export default (props) => {
   const data = [
@@ -27,8 +27,8 @@ export default (props) => {
     new PathLayer({
       id: "path-layer",
       data,
-      getWidth: (data) => 3,
-      getColor: (data) => data.color,
+      getWidth: () => 3,
+      getColor: (d: any) => d.color,
       widthMinPixels: 3,
     }),
   ];

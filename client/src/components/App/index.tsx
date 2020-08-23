@@ -5,13 +5,11 @@ import { useCookies } from "react-cookie";
 import { useGlobal, State, Actions } from "../../state";
 import { Body } from "../Body";
 import Header from "../Header";
-
-require("./styles.scss");
+import "./styles.scss";
 
 export default (props) => {
   const [cookies, setCookie, removeCookie] = useCookies(["auth"]);
   const [state, actions] = useGlobal<State, Actions>();
-  console.log(cookies);
 
   if (cookies) {
     useEffect(() => {
@@ -20,20 +18,15 @@ export default (props) => {
         headers: {
           Authorization: "Bearer " + cookies.apiKey,
         },
-      })
-        .then((resp) => {
-          if (resp.status === 200) {
-            resp.json().then((data) => {
-              console.log(data);
-              actions.setUser(data);
-            });
-          } else {
-            removeCookie("auth");
-          }
-        })
-        .catch((err) =>
-          console.error("Cought error during token validation" + err)
-        );
+      }).then((resp) => {
+        if (resp.status === 200) {
+          resp.json().then((data) => {
+            actions.setUser(data);
+          });
+        } else {
+          removeCookie("auth");
+        }
+      });
     }, []);
   }
 

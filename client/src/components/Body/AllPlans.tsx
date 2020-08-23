@@ -52,7 +52,9 @@ export default (props) => {
             setPlans(data);
             actions.setPlans(data);
           })
-          .catch((err) => console.error(err.message))
+          .catch((err) => {
+            throw new Error(err);
+          })
       );
     }
   }, []);

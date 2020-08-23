@@ -23,10 +23,7 @@ export default (props) => {
             JSON.stringify(data.stravaActivities)
           );
           window.location.href = "/my-activities";
-        })
-        .catch((err) =>
-          console.error("Error during fetching activities: " + err)
-        );
+        });
     }, []);
   }
 

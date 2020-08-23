@@ -6,7 +6,6 @@ import AllActivitesWithMap from "./AllActivitiesWithMap";
 
 const getDomain = (): string => {
   const href = window.location.href;
-  console.log(`Location is ${href}`);
   return href.split("/")[2];
 };
 
@@ -37,7 +36,6 @@ export default (props) => {
     })
       .then((resp) => {
         resp.json().then((d) => {
-          console.log(d);
           localStorage.setItem(
             "activities",
             JSON.stringify(d.stravaActivities)
@@ -45,7 +43,9 @@ export default (props) => {
           window.location.href = "/my-activities";
         });
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        throw new Error(err);
+      });
     setIsSending(false);
   };
 
