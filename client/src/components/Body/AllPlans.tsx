@@ -41,7 +41,7 @@ export interface IPlan extends Document {
 
 export default (props) => {
   const [plans, setPlans] = useState(null);
-  const [_, actions] = useGlobal<State, Actions>();
+  const [, actions] = useGlobal<State, Actions>();
 
   useEffect(() => {
     if (!plans) {
@@ -57,7 +57,7 @@ export default (props) => {
           })
       );
     }
-  }, []);
+  }, [actions, plans]);
 
   const iconMap = {
     Running: "images/shoe_icon.svg",
@@ -74,7 +74,11 @@ export default (props) => {
     <div className="plans">
       <div className="plan">
         <div className="newPlan">
-          <img style={{ width: "2vw", height: "2vw" }} src="images/plus.svg" />
+          <img
+            style={{ width: "2vw", height: "2vw" }}
+            src="images/plus.svg"
+            alt=""
+          />
         </div>
         <p style={{ color: "#3D425E" }}>add plan</p>
       </div>
@@ -84,6 +88,7 @@ export default (props) => {
             <img
               style={{ width: "4vw", height: "4vw" }}
               src={iconMap[p.type]}
+              alt=""
             />
             <p className="planLabel">{cutName(p.name)}</p>
             <p className="planLabel">{p.target}</p>

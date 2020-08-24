@@ -18,7 +18,7 @@ export default (props) => {
       .toLocaleUpperCase()
       .replace("-", " ")
   );
-  const [cookies, setCookie, removeCookie] = useCookies(["auth"]);
+  const [, , removeCookie] = useCookies(["auth"]);
 
   const handleClick = (pageLink) => {
     setPage(pageLink);

@@ -8,8 +8,8 @@ import Header from "../Header";
 import "./styles.scss";
 
 export default (props) => {
-  const [cookies, setCookie, removeCookie] = useCookies(["auth"]);
-  const [state, actions] = useGlobal<State, Actions>();
+  const [cookies, , removeCookie] = useCookies(["auth"]);
+  const [, actions] = useGlobal<State, Actions>();
 
   if (cookies) {
     useEffect(() => {
@@ -27,7 +27,7 @@ export default (props) => {
           removeCookie("auth");
         }
       });
-    }, []);
+    }, [actions, cookies.apiKey, removeCookie]);
   }
 
   return (

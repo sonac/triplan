@@ -4,10 +4,8 @@ import { useCookies } from "react-cookie";
 import ActivityWithMap from "./ActivityWithMap";
 
 export default (props) => {
-  const [cookies, setCookie, removeCookie] = useCookies(["auth"]);
-  const [activities, setActivities] = useState(
-    JSON.parse(localStorage.getItem("activities"))
-  );
+  const [cookies, ,] = useCookies(["auth"]);
+  const [activities] = useState(JSON.parse(localStorage.getItem("activities")));
 
   if (!activities) {
     useEffect(() => {
@@ -24,7 +22,7 @@ export default (props) => {
           );
           window.location.href = "/my-activities";
         });
-    }, []);
+    }, [cookies.apiKey]);
   }
 
   if (activities === null) {

@@ -28,7 +28,7 @@ export default (props) => {
   const icon = iconMap[props.activity.activityType];
   return (
     <div className="activity">
-      <img src={icon} />
+      <img src={icon} alt="" />
     </div>
   );
 };

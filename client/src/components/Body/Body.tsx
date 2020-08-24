@@ -89,7 +89,7 @@ export default (_) => {
         });
       setIsSending(false);
     },
-    [isSendding]
+    [isSendding, actions, removeCookie, setCookie]
   );
 
   const handleChange = (e, inp) => {

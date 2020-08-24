@@ -123,6 +123,7 @@ export default () => {
         className="leftArrow"
         src="images/left_arrow.svg"
         onClick={() => setMonth(safeMonthYearSubstraction(monthIdx))}
+        alt=""
       />
       <div className="calendar">
         <table>
@@ -170,6 +171,7 @@ export default () => {
         className="rightArrow"
         src="images/left_arrow.svg"
         onClick={() => setMonth(safeMonthYearAddition(monthIdx))}
+        alt=""
       />
     </div>
   );
