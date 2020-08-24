@@ -7,8 +7,11 @@ import { getAuthCode, getActivities } from "./strava";
 import { logger } from "../app";
 
 const keyPath = (): string => {
+  if (process.env.CI) {
+    return "";
+  }
   const path = process.env.PRIVATE_KEY_PATH;
-  if (!path && !process.env.CI) {
+  if (!path) {
     throw new Error("Private key path is not set");
   }
   return path;
