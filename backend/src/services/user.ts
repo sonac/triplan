@@ -8,7 +8,7 @@ import { logger } from "../app";
 
 const keyPath = (): string => {
   const path = process.env.PRIVATE_KEY_PATH;
-  if (!path) {
+  if (!path && !process.env.CI) {
     throw new Error("Private key path is not set");
   }
   return path;
