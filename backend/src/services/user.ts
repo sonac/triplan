@@ -7,9 +7,6 @@ import { getAuthCode, getActivities } from "./strava";
 import { logger } from "../app";
 
 const keyPath = (): string => {
-  if (process.env.CI) {
-    return "";
-  }
   const path = process.env.PRIVATE_KEY_PATH;
   if (!path) {
     throw new Error("Private key path is not set");
@@ -17,7 +14,7 @@ const keyPath = (): string => {
   return path;
 };
 
-const privateKey = fs.readFileSync(keyPath());
+const privateKey = process.env.CI ? "" : fs.readFileSync(keyPath());
 
 const userFromToken = async (token: string): Promise<IUser> => {
   const user = await UserModel.findOne({ authToken: token });
