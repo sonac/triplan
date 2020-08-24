@@ -4,6 +4,11 @@ import { useCookies } from "react-cookie";
 import { useGlobal, State, Actions } from "../../state";
 import AllActivitesWithMap from "./AllActivitiesWithMap";
 
+const getDomain = (): string => {
+  const href = window.location.href;
+  return href.split("/")[2];
+};
+
 export default (props) => {
   const [state, actions] = useGlobal<State, Actions>();
   const [isSendding, setIsSending] = useState(false);
@@ -16,8 +21,7 @@ export default (props) => {
   }
 
   const handleClick = () => {
-    window.location.href =
-      "http://www.strava.com/oauth/authorize?client_id=37166&response_type=code&approval_prompt=force&scope=read_all,activity:read_all&redirect_uri=http://localhost:3000/exchange-token";
+    window.location.href = `http://www.strava.com/oauth/authorize?client_id=37166&response_type=code&approval_prompt=force&scope=read_all,activity:read_all&redirect_uri=http://${getDomain()}/exchange-token`;
   };
 
   const refreshActivities = async (): Promise<void> => {
@@ -32,7 +36,6 @@ export default (props) => {
     })
       .then((resp) => {
         resp.json().then((d) => {
-          console.log(d);
           localStorage.setItem(
             "activities",
             JSON.stringify(d.stravaActivities)
@@ -40,7 +43,9 @@ export default (props) => {
           window.location.href = "/my-activities";
         });
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        throw new Error(err);
+      });
     setIsSending(false);
   };
 

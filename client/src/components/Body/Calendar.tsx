@@ -19,7 +19,7 @@ const getMonthDays = (
   monthIdx: number,
   fromDay: number = 1,
   toDay: number = moment().year(yearIdx).month(monthIdx).daysInMonth()
-): Array<Date> => {
+): Date[] => {
   return Array.from(
     { length: Math.max(toDay - (fromDay - 1), 0) },
     (_, i) => fromDay + i
@@ -35,19 +35,16 @@ const getLeftoverDaysFromPrevMonth = (
   yearIdx: number,
   monthIdx: number,
   dayOfWeek: number
-): Array<Date> => {
+): Date[] => {
   const fromDay: number =
     moment().month(safeMonthSubstraction(monthIdx)).daysInMonth() -
     dayOfWeek +
     1;
-  const days: Array<Date> = getMonthDays(yearIdx, monthIdx - 1, fromDay);
+  const days: Date[] = getMonthDays(yearIdx, monthIdx - 1, fromDay);
   return days;
 };
 
-const buildMonthCalendar = (
-  monthIdx: number,
-  yearIdx: number
-): Array<Array<Date>> => {
+const buildMonthCalendar = (monthIdx: number, yearIdx: number): Date[][] => {
   const firstDayOfMonth =
     moment().year(yearIdx).month(monthIdx).date(1).isoWeekday() - 1;
   const lastDayOfMonth =
@@ -69,7 +66,6 @@ const buildMonthCalendar = (
     6 - lastDayOfMonth
   );
   // add one more week in case in total month calendar will be 5 weeks
-  console.log(thisMonthDays);
   while (
     (prevMonthDays.length + thisMonthDays.length + nextMonthDays.length) / 7 <
     6
@@ -83,9 +79,7 @@ const buildMonthCalendar = (
       )
     );
   }
-  console.log(nextMonthDays);
   const month = prevMonthDays.concat(thisMonthDays).concat(nextMonthDays);
-  console.log(month);
   return Array.from({ length: month.length / 7 }, (_, i) => 0 + i).map((_, n) =>
     month.slice(n * 7, (n + 1) * 7)
   );
@@ -99,25 +93,23 @@ export default () => {
   const month: string = moment().month(monthIdx).format("MMMM");
   const year: string = moment().year(yearIdx).format("YYYY");
 
-  const safeMonthYearSubstraction = (monthIdx: number): number => {
-    if (monthIdx === 0) {
+  const safeMonthYearSubstraction = (mIdx: number): number => {
+    if (mIdx === 0) {
       setYear(yearIdx - 1);
       return 11;
     }
-    return monthIdx - 1;
+    return mIdx - 1;
   };
 
-  console.log(state);
-
-  const safeMonthYearAddition = (monthIdx: number): number => {
-    if (monthIdx === 11) {
+  const safeMonthYearAddition = (mIdx: number): number => {
+    if (mIdx === 11) {
       setYear(yearIdx + 1);
       return 0;
     }
-    return monthIdx + 1;
+    return mIdx + 1;
   };
 
-  const plannedActivities: Array<Activity> = state.user
+  const plannedActivities: Activity[] = state.user
     ? state.user.activities.map((activity: any) => {
         return { ...activity, date: new Date(activity.date) };
       })

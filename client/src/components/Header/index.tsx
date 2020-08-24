@@ -3,15 +3,14 @@ import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useHistory, Link } from "react-router-dom";
 import { useGlobal, State, Actions } from "../../state";
-
-require("./styles.scss");
+import "./styles.scss";
 
 export const toKebab = (text: string) => {
   return text.toLocaleLowerCase().replace(/ /g, "-");
 };
 
 export default (props) => {
-  let history = useHistory();
+  const history = useHistory();
   const [state, actions] = useGlobal<State, Actions>();
   const [page, setPage] = useState(
     history.location.pathname
@@ -21,9 +20,9 @@ export default (props) => {
   );
   const [cookies, setCookie, removeCookie] = useCookies(["auth"]);
 
-  const handleClick = (page) => {
-    setPage(page);
-    history.push(toKebab(page));
+  const handleClick = (pageLink) => {
+    setPage(pageLink);
+    history.push(toKebab(pageLink));
   };
 
   const buttonPressed = state.authModal === null ? "inset" : "";

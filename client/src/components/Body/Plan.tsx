@@ -6,8 +6,7 @@ import { useGlobal, State, Actions } from "../../state";
 import { toKebab } from "../Header";
 import { daysOfWeek } from "./Calendar";
 import { IInterval } from "./AllPlans";
-
-require("./styles.scss");
+import "./styles.scss";
 
 export default () => {
   const { planName } = useParams();
@@ -15,7 +14,7 @@ export default () => {
   const [state, actions] = useGlobal<State, Actions>();
   const [plan, setPlan] = useState(
     state.plans
-      ? state.plans.filter((plan) => toKebab(plan.name) === planName)[0]
+      ? state.plans.filter((p) => toKebab(p.name) === planName)[0]
       : null
   );
   const [week, setWeek] = useState(1);
@@ -25,8 +24,8 @@ export default () => {
     [weekNumber.toString() + " week"].concat(daysOfWeek);
 
   const stringifyInterval = (interval: IInterval): string =>
-    `${interval.amount}x ${interval.fastDistance | interval.fastTime} with ${
-      interval.restDistance | interval.restTime
+    `${interval.amount}x ${interval.fastDistance || interval.fastTime} with ${
+      interval.restDistance || interval.restTime
     } rest`;
 
   const max = (numX: number, numY: number): number =>
@@ -47,7 +46,6 @@ export default () => {
 
   const activatePlan = useCallback(
     async (activationPlan) => {
-      console.log(activationPlan);
       if (activationPlan) {
         setIsSending(true);
         const resp = await fetch("/api/v1/user/activate-plan", {

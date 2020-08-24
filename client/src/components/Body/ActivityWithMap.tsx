@@ -4,7 +4,7 @@ import Map from "./Map";
 import * as polyline from "@mapbox/polyline";
 import moment from "moment";
 
-const reverseCoordinatess = (crds: Array<number>) => [crds[1], crds[0]];
+const reverseCoordinatess = (crds: number[]) => [crds[1], crds[0]];
 
 export default (props) => {
   const activity: MapActivity = props.activity;

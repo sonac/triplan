@@ -8,8 +8,7 @@ import Plans from "./AllPlans";
 import UserActivities from "./UserActivities";
 import { useGlobal, State, Actions } from "../../state";
 import Plan from "./Plan";
-
-require("./styles.scss");
+import "./styles.scss";
 
 interface AuthInput {
   email: string;
@@ -60,16 +59,14 @@ export default (_) => {
         },
         body: JSON.stringify({ code: tokenString }),
       }).then((res) => {
-        console.log(res);
         window.location.href = "/my-activities";
       });
     });
   }
 
   const sendAuth = useCallback(
-    async (authType: string, authInput: AuthInput) => {
+    async (authType: string, authInp: AuthInput) => {
       const authEndpoint = authType === "SIGN UP" ? "register" : "login";
-      console.log(authInput);
       if (isSendding) return;
       setIsSending(true);
       await fetch(`/api/v1/user/${authEndpoint}`, {
@@ -77,7 +74,7 @@ export default (_) => {
         headers: {
           "Content-Type": "application/json;charset=utf-8",
         },
-        body: JSON.stringify(authInput),
+        body: JSON.stringify(authInp),
       })
         .then((resp) => {
           resp.json().then((d) => {
@@ -87,7 +84,9 @@ export default (_) => {
             window.location.href = "/my-activities";
           });
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          throw new Error(err);
+        });
       setIsSending(false);
     },
     [isSendding]
