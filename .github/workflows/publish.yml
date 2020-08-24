@@ -14,5 +14,12 @@ jobs:
         run: |
           yarn --cwd client install
           yarn --cwd backend install
-          make ci-docker-login  
-          make publish
+          make build-docker
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: sonac/triplan/triplan
+          tag_with_ref: true
