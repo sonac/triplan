@@ -33,6 +33,7 @@ export default (props) => {
         className="icon"
         style={{ gridColumn: "1", gridRow: "3 / 3" }}
         src={iconMap[activity.activityType]}
+        alt=""
       />
       <p style={{ gridColumn: "2", gridRow: "1", alignSelf: "flex-end" }}>
         {Math.floor(activity.distance / 10) / 100} km

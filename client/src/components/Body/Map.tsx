@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useState } from "react";
 import DeckGL from "deck.gl";
 import { StaticMap } from "react-map-gl";
 import { PathLayer } from "@deck.gl/layers";
@@ -16,13 +15,6 @@ export default (props) => {
       path: props.path,
     },
   ];
-  const [viewport, setViewPort] = useState({
-    width: "100%",
-    height: 900,
-    latitude: 0,
-    longitude: 0,
-    zoom: 2,
-  });
   const layer = [
     new PathLayer({
       id: "path-layer",

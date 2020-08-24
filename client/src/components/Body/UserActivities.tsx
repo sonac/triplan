@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useGlobal, State, Actions } from "../../state";
 import AllActivitesWithMap from "./AllActivitiesWithMap";
@@ -10,9 +10,9 @@ const getDomain = (): string => {
 };
 
 export default (props) => {
-  const [state, actions] = useGlobal<State, Actions>();
+  const [state] = useGlobal<State, Actions>();
   const [isSendding, setIsSending] = useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies(["auth"]);
+  const [cookies, ,] = useCookies(["auth"]);
 
   if (state.user === null) {
     return (

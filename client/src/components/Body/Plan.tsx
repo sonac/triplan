@@ -10,8 +10,8 @@ import "./styles.scss";
 
 export default () => {
   const { planName } = useParams();
-  const [cookies, setCookie, removeCookie] = useCookies(["auth"]);
-  const [state, actions] = useGlobal<State, Actions>();
+  const [cookies, ,] = useCookies(["auth"]);
+  const [state] = useGlobal<State, Actions>();
   const [plan, setPlan] = useState(
     state.plans
       ? state.plans.filter((p) => toKebab(p.name) === planName)[0]
@@ -46,9 +46,9 @@ export default () => {
 
   const activatePlan = useCallback(
     async (activationPlan) => {
-      if (activationPlan) {
+      if (activationPlan && !isSendding) {
         setIsSending(true);
-        const resp = await fetch("/api/v1/user/activate-plan", {
+        await fetch("/api/v1/user/activate-plan", {
           method: "POST",
           headers: {
             Authorization: "Bearer " + cookies.apiKey,
@@ -57,15 +57,14 @@ export default () => {
           body: JSON.stringify(activationPlan),
         });
         setIsSending(false);
-      }
+      } else return;
     },
-    [isSendding]
+    [isSendding, cookies.apiKey]
   );
 
   if (!plan) {
     return <div>Plan is loading</div>;
   }
-  const weeks: number[] = plan.trainings.keys();
   return (
     <div>
       <div className="startPlanButton" onClick={() => activatePlan(plan)}>
@@ -76,6 +75,7 @@ export default () => {
           className="leftArrow"
           src="/images/left_arrow.svg"
           onClick={() => setWeek(max(1, week - 1))}
+          alt=""
         />
         <table className="planDetails">
           <thead>
@@ -242,6 +242,7 @@ export default () => {
           className="rightArrow"
           src="/images/left_arrow.svg"
           onClick={() => setWeek(min(week + 1, plan.length))}
+          alt=""
         />
       </div>
     </div>
