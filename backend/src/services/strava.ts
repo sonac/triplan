@@ -15,17 +15,20 @@ const getAccessToken = async (refreshToken: string): Promise<string> => {
   };
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
+  logger.debug("Headers are: ", headers);
   const req = fetch("https://www.strava.com/api/v3/oauth/token", {
     method: "POST",
     body: JSON.stringify(body),
     headers,
   });
   const resp = await req;
+  logger.debug(`Resp is: ${resp}`);
   const stravaUser = await resp.json();
   return stravaUser.access_token;
 };
 
 export const jsonToStravaActivity = (parsed: any): IStravaActivity => {
+  logger.debug(parsed);
   // @ts-ignore
   return {
     id: parseInt(parsed.id, 10),
@@ -36,7 +39,9 @@ export const jsonToStravaActivity = (parsed: any): IStravaActivity => {
     startDate: new Date(parsed.startDate.toString()),
     averageSpeed: parseFloatOrNull(parsed.averageSpeed),
     averageWatts: parseFloatOrNull(parsed.averageWatts),
-    mapPolyline: parsed.map.summaryPolyline.toString(),
+    mapPolyline: parsed.map.summaryPolyline
+      ? parsed.map.summaryPolyline.toString()
+      : null,
   };
 };
 
@@ -65,12 +70,14 @@ export const getActivities = async (
   const accessToken = await getAccessToken(token);
   const authHeader: HeadersInit = { Authorization: `Bearer ${accessToken}` };
   const headers = new Headers(authHeader);
+  logger.debug("Headers are: ", headers);
   const resp = await fetch("https://www.strava.com/api/v3/athlete/activities", {
     method: "GET",
-    headers,
+    headers: headers,
   });
+  logger.debug(`Response is: ${resp}`);
   const stravaActivitiesJson = await resp.json();
-  logger.info("Fetched activities: ", stravaActivitiesJson);
+  logger.debug(`Fetched activities: ${stravaActivitiesJson}`);
   const caramelized = camelCaseKeys(stravaActivitiesJson);
   // @ts-ignore
   const stravaActivities = caramelized.map((activity: any) =>

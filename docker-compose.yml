@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   app:
-    image: triplan
+    image: docker.pkg.github.com/sonac/triplan/triplan
     restart: always
     env_file:
       - .env
@@ -27,6 +27,8 @@ services:
       - ./triData:/data/db
     networks:
       - app-network
+    ports:
+      - "27017:27017"
   webserver:
     image: nginx:mainline-alpine
     container_name: webserver
