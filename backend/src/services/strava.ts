@@ -70,6 +70,7 @@ export const getActivities = async (
     headers,
   });
   const stravaActivitiesJson = await resp.json();
+  logger.info("Fetched activities: ", stravaActivitiesJson);
   const caramelized = camelCaseKeys(stravaActivitiesJson);
   // @ts-ignore
   const stravaActivities = caramelized.map((activity: any) =>
