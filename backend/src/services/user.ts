@@ -19,11 +19,12 @@ const privateKey = process.env.CI ? "" : fs.readFileSync(keyPath());
 const userFromToken = async (token: string): Promise<IUser> => {
   const user = await UserModel.findOne({ authToken: token });
   if (!user) {
+    logger.debug(`User with tokne ${token} not found`);
     throw new Error(`User with such token doesn't exist`);
   }
+  logger.debug(`Retrieved user:  ${user}`);
   return user;
 };
-
 export const getUsers = () => {
   return [];
 };
@@ -98,6 +99,7 @@ export const getStravaActivities = async (token: string): Promise<IUser> => {
       throw new Error("Something went wrong, please retry");
     }
   }
+  logger.debug(`Fetching activities for user: ${user}`);
   const activities: IStravaActivity[] = await getActivities(user.stravaToken);
   await UserModel.findOneAndUpdate(
     { email: user.email },

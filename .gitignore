@@ -13,3 +13,4 @@ private.key
 build
 .localenv
 .metals
+backend/mongo-init.js

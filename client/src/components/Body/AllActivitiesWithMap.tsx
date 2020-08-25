@@ -31,6 +31,7 @@ export default (props) => {
   return (
     <div className="allActivitiesWithMap">
       {activities
+        .filter((a) => a.mapPolyline)
         .filter((a) => a.mapPolyline.length > 0)
         .sort(
           (a, b) =>
