@@ -35,6 +35,7 @@ jobs:
           envs: GITHUB_USERNAME, GITHUB_TOKEN
           script: |
             cd app
+            ls -al
             docker-compose down 
             docker login docker.pkg.github.com -u $GITHUB_USERNAME -p $GITHUB_TOKEN
             docker pull docker.pkg.github.com/sonac/triplan/triplan:latest
