@@ -1,8 +1,10 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import * as Modal from "react-modal";
 import { useGlobal, State, Actions } from "../../state";
 import { toKebab } from "../Header/index";
+import { customStyles } from "./Body";
 
 export interface IInterval extends Document {
   fastDistance: number | null;
@@ -41,6 +43,7 @@ export interface IPlan extends Document {
 
 export default (props) => {
   const [plans, setPlans] = useState(null);
+  const [addPlanModal, switchPlanModal] = useState(false);
   const [, actions] = useGlobal<State, Actions>();
 
   useEffect(() => {
@@ -79,10 +82,22 @@ export default (props) => {
             style={{ width: "2vw", height: "2vw" }}
             src="images/plus.svg"
             alt=""
+            onClick={() => switchPlanModal(true)}
           />
         </div>
         <p style={{ color: "#3D425E" }}>add plan</p>
       </div>
+      <Modal
+        isOpen={addPlanModal}
+        onRequestClose={() => switchPlanModal(false)}
+        style={customStyles}
+      >
+        <div className="activityModal">
+          Please send your suggested plan for adding to sonag007@gmail.com Or
+          submit the PR for
+          https://github.com/sonac/triplan/tree/master/backend/resources/plans
+        </div>
+      </Modal>
       {plans.map((p) => (
         <Link to={`plan/${toKebab(p.name)}`}>
           <div key={p.name} className="plan">
