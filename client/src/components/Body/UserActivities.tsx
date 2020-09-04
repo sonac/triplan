@@ -16,7 +16,16 @@ export default (props) => {
 
   if (state.user === null) {
     return (
-      <div style={{ color: "white" }}>Sign in to view your activities</div>
+      <div
+        style={{
+          color: "white",
+          textAlign: "center",
+          paddingTop: "6em",
+          fontSize: "3em",
+        }}
+      >
+        Sign in to view your activities
+      </div>
     );
   }
 

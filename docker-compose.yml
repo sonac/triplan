@@ -21,10 +21,11 @@ services:
     container_name: mongodb
     restart: always
     env_file:
-      - .env
+      - .localenv
     volumes:
-      - ./backend/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./backend/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
       - ./triData:/data/db
+      - ./backend/resources/plans:/plans
     networks:
       - app-network
     ports:

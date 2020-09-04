@@ -37,11 +37,29 @@ const customStyles = {
 // Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement("#root");
 
+const isValidEmail = (email: string): boolean => {
+  const emailRegex: RegExp = /\S+@\S+\.\S+/;
+  return emailRegex.test(email);
+};
+
+const isStrongPassword = (password: string): string => {
+  const digits = /\d/;
+  const capitals = /[A-Z]\B/;
+  if (!digits.test(password)) {
+    return "Passowrd must contain at least one digit";
+  }
+  if (!capitals.test(password)) {
+    return "Passowrd must contain at least one capitals letter";
+  }
+  return "Valid";
+};
+
 export default (_) => {
   const [state, actions] = useGlobal<State, Actions>();
   const [authInput, setAuth] = useState({ email: "", password: "" });
   const [isSendding, setIsSending] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["auth"]);
+  const [errMessage, setErrMessage] = useState("");
   const location = useLocation();
 
   if (location.pathname.includes("exchange-token")) {
@@ -67,6 +85,17 @@ export default (_) => {
   const sendAuth = useCallback(
     async (authType: string, authInp: AuthInput) => {
       const authEndpoint = authType === "SIGN UP" ? "register" : "login";
+      setErrMessage("");
+      if (!isValidEmail(authInp.email)) {
+        setErrMessage("Email address is invalid");
+        return;
+      }
+      const passwordValidation: string = isStrongPassword(authInp.password);
+
+      if (passwordValidation !== "Valid") {
+        setErrMessage(passwordValidation);
+        return;
+      }
       if (isSendding) return;
       setIsSending(true);
       await fetch(`/api/v1/user/${authEndpoint}`, {
@@ -89,7 +118,16 @@ export default (_) => {
         });
       setIsSending(false);
     },
-    [isSendding, actions, removeCookie, setCookie]
+    [
+      isSendding,
+      actions,
+      removeCookie,
+      setCookie,
+      isValidEmail,
+      isStrongPassword,
+      setErrMessage,
+      errMessage,
+    ]
   );
 
   const handleChange = (e, inp) => {
@@ -152,6 +190,7 @@ export default (_) => {
             id="password"
             onChange={(e) => handleChange(e, "password")}
           ></input>
+          <div className="errorMessage">{errMessage}</div>
           <button
             id="submit"
             onClick={() => sendAuth(state.authModal, authInput)}
