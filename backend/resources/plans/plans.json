@@ -18,21 +18,24 @@
         },
         "pace": "10K",
         "time": "40",
-        "intencity": "8/10"
+        "intencity": "8/10",
+        "type": "Running"
       },
       "wednesday": {
         "sessionName": "Steady",
         "distance": "4M",
         "pace": "9:45/Mile",
         "time": "39",
-        "intensity": "6/10"
+        "intensity": "6/10",
+        "type": "Running"
       },
       "thursday": {
         "sessionName": "Fartlek",
         "distance": "4M",
         "pace": "10:00/Mile",
         "time": "40",
-        "intensity": "7/10"
+        "intensity": "7/10",
+        "type": "Running"
       },
       "friday": {
         "sessionName": "Rest"
@@ -42,14 +45,16 @@
         "distance": "3M",
         "pace": "11:00",
         "time": "33",
-        "intensity": "4/10"
+        "intensity": "4/10",
+        "type": "Running"
       },
       "sunday": {
         "sessionName": "Race",
         "distance": "10K",
         "pace": "9:00",
         "time": "55",
-        "intensity": "9/10"
+        "intensity": "9/10",
+        "type": "Running"
       }
     },
     {
@@ -66,21 +71,24 @@
         },
         "pace": "5K",
         "time": "50",
-        "intencity": "8/10"
+        "intencity": "8/10",
+        "type": "Running"
       },
       "wednesday": {
         "sessionName": "Steady",
         "distance": "5M",
         "pace": "9:45/Mile",
         "time": "48",
-        "intensity": "5/10"
+        "intensity": "5/10",
+        "type": "Running"
       },
       "thursday": {
         "sessionName": "Threshold",
         "distance": "5M",
         "pace": "HalfMarathon",
         "time": "50",
-        "intensity": "9/10"
+        "intensity": "9/10",
+        "type": "Running"
       },
       "friday": {
         "sessionName": "Rest"
@@ -95,14 +103,16 @@
         },
         "pace": "10:00",
         "time": "50",
-        "intensity": "6/10"
+        "intensity": "6/10",
+        "type": "Running"
       },
       "sunday": {
         "sessionName": "Long Run",
         "distance": "8M",
         "pace": "10:00",
         "time": "88",
-        "intensity": "7/10"
+        "intensity": "7/10",
+        "type": "Running"
       }
     },
     {
@@ -119,21 +129,24 @@
         },
         "pace": "10K",
         "time": "60",
-        "intencity": "9/10"
+        "intencity": "9/10",
+        "type": "Running"
       },
       "wednesday": {
         "sessionName": "Steady",
         "distance": "5M",
         "pace": "9:45/Mile",
         "time": "48",
-        "intensity": "6/10"
+        "intensity": "6/10",
+        "type": "Running"
       },
       "thursday": {
         "sessionName": "Threshold",
         "distance": "5M",
         "pace": "HalfMarathon",
         "time": "48",
-        "intensity": "8/10"
+        "intensity": "8/10",
+        "type": "Running"
       },
       "friday": {
         "sessionName": "Rest"
@@ -143,14 +156,16 @@
         "distance": "5M",
         "pace": "10:00/Mile",
         "time": "55",
-        "intensity": "5/10"
+        "intensity": "5/10",
+        "type": "Running"
       },
       "sunday": {
         "sessionName": "Long Run",
         "distance": "9M",
         "pace": "10:00/Mile",
         "time": "90",
-        "intensity": "7/10"
+        "intensity": "7/10",
+        "type": "Running"
       }
     },
     {
@@ -167,21 +182,24 @@
         },
         "pace": "10K",
         "time": "60",
-        "intencity": "8/10"
+        "intencity": "8/10",
+        "type": "Running"
       },
       "wednesday": {
         "sessionName": "Steady",
         "distance": "6M",
         "pace": "9:45/Mile",
         "time": "58",
-        "intensity": "6/10"
+        "intensity": "6/10",
+        "type": "Running"
       },
       "thursday": {
         "sessionName": "Fartlek",
         "distance": "5M",
         "pace": "10:00/Mile",
         "time": "55",
-        "intensity": "7/10"
+        "intensity": "7/10",
+        "type": "Running"
       },
       "friday": {
         "sessionName": "Rest"
@@ -191,14 +209,16 @@
         "distance": "3M",
         "pace": "11:00",
         "time": "33",
-        "intensity": "3/10"
+        "intensity": "3/10",
+        "type": "Running"
       },
       "sunday": {
         "sessionName": "Race",
         "distance": "10K",
         "pace": "8:30",
         "time": "53",
-        "intensity": "10/10"
+        "intensity": "10/10",
+        "type": "Running"
       }
     },
     {
@@ -215,21 +235,24 @@
         },
         "pace": "5K",
         "time": "55",
-        "intencity": "9/10"
+        "intencity": "9/10",
+        "type": "Running"
       },
       "wednesday": {
         "sessionName": "Steady",
         "distance": "7M",
         "pace": "9:45/Mile",
         "time": "68",
-        "intensity": "6/10"
+        "intensity": "6/10",
+        "type": "Running"
       },
       "thursday": {
         "sessionName": "Threshold",
         "distance": "5M",
         "pace": "HalfMarathon",
         "time": "50",
-        "intensity": "8/10"
+        "intensity": "8/10",
+        "type": "Running"
       },
       "friday": {
         "sessionName": "Rest"
@@ -244,14 +267,16 @@
         },
         "pace": "11:00",
         "time": "55",
-        "intensity": "6/10"
+        "intensity": "6/10",
+        "type": "Running"
       },
       "sunday": {
         "sessionName": "Long Run",
         "distance": "10M",
         "pace": "10:00",
         "time": "100",
-        "intensity": "7/10"
+        "intensity": "7/10",
+        "type": "Running"
       }
     },
     {
@@ -268,21 +293,24 @@
         },
         "pace": "5K",
         "time": "55",
-        "intencity": "8/10"
+        "intencity": "8/10",
+        "type": "Running"
       },
       "wednesday": {
         "sessionName": "Steady",
         "distance": "5M",
         "pace": "9:45/Mile",
         "time": "48",
-        "intensity": "6/10"
+        "intensity": "6/10",
+        "type": "Running"
       },
       "thursday": {
         "sessionName": "Fartlek",
         "distance": "5M",
         "pace": "10:00/Mile",
         "time": "55",
-        "intensity": "7/10"
+        "intensity": "7/10",
+        "type": "Running"
       },
       "friday": {
         "sessionName": "Rest"
@@ -292,14 +320,16 @@
         "distance": "3M",
         "pace": "11:00",
         "time": "33",
-        "intensity": "3/10"
+        "intensity": "3/10",
+        "type": "Running"
       },
       "sunday": {
         "sessionName": "Time Trial",
         "distance": "10M",
         "pace": "Half Marathon",
         "time": "90",
-        "intensity": "9/10"
+        "intensity": "9/10",
+        "type": "Running"
       }
     },
     {
@@ -316,21 +346,24 @@
         },
         "pace": "5K",
         "time": "55",
-        "intencity": "7/10"
+        "intencity": "7/10",
+        "type": "Running"
       },
       "wednesday": {
         "sessionName": "Steady",
         "distance": "7M",
         "pace": "9:45/Mile",
         "time": "68",
-        "intensity": "6/10"
+        "intensity": "6/10",
+        "type": "Running"
       },
       "thursday": {
         "sessionName": "Threshold",
         "distance": "5M",
         "pace": "Half Marathon",
         "time": "50",
-        "intensity": "8/10"
+        "intensity": "8/10",
+        "type": "Running"
       },
       "friday": {
         "sessionName": "Rest"
@@ -340,14 +373,16 @@
         "distance": "5M",
         "pace": "10:00",
         "time": "55",
-        "intensity": "5/10"
+        "intensity": "5/10",
+        "type": "Running"
       },
       "sunday": {
         "sessionName": "Long Run",
         "distance": "13M",
         "pace": "10:00",
         "time": "130",
-        "intensity": "9/10"
+        "intensity": "9/10",
+        "type": "Running"
       }
     },
     {
@@ -364,14 +399,16 @@
         },
         "pace": "5K",
         "time": "55",
-        "intencity": "8/10"
+        "intencity": "8/10",
+        "type": "Running"
       },
       "wednesday": {
         "sessionName": "Steady",
         "distance": "5M",
         "pace": "9:45/Mile",
         "time": "48",
-        "intensity": "6/10"
+        "intensity": "6/10",
+        "type": "Running"
       },
       "thursday": {
         "sessionName": "Hills",
@@ -383,7 +420,8 @@
         },
         "pace": "10:00/Mile",
         "time": "55",
-        "intensity": "7/10"
+        "intensity": "7/10",
+        "type": "Running"
       },
       "friday": {
         "sessionName": "Rest"
@@ -393,14 +431,16 @@
         "distance": "3M",
         "pace": "11:00",
         "time": "33",
-        "intensity": "3/10"
+        "intensity": "3/10",
+        "type": "Running"
       },
       "sunday": {
         "sessionName": "Race",
         "distance": "Half Marathon",
         "pace": "9:20",
         "time": "122",
-        "intensity": "9/10"
+        "intensity": "9/10",
+        "type": "Running"
       }
     },
     {
@@ -417,21 +457,24 @@
         },
         "pace": "5K",
         "time": "55",
-        "intencity": "8/10"
+        "intencity": "8/10",
+        "type": "Running"
       },
       "wednesday": {
         "sessionName": "Steady",
         "distance": "4M",
         "pace": "9:45/Mile",
         "time": "38",
-        "intensity": "5/10"
+        "intensity": "5/10",
+        "type": "Running"
       },
       "thursday": {
         "sessionName": "Threshold",
         "distance": "5M",
         "pace": "Half Marathon",
         "time": "50",
-        "intensity": "7/10"
+        "intensity": "7/10",
+        "type": "Running"
       },
       "friday": {
         "sessionName": "Rest"
@@ -441,14 +484,16 @@
         "distance": "5M",
         "pace": "10:00",
         "time": "55",
-        "intensity": "6/10"
+        "intensity": "6/10",
+        "type": "Running"
       },
       "sunday": {
         "sessionName": "Long Run",
         "distance": "13M",
         "pace": "10:00",
         "time": "130",
-        "intensity": "9/10"
+        "intensity": "9/10",
+        "type": "Running"
       }
     },
     {
@@ -465,21 +510,24 @@
         },
         "pace": "5K",
         "time": "55",
-        "intencity": "8/10"
+        "intencity": "8/10",
+        "type": "Running"
       },
       "wednesday": {
         "sessionName": "Steady",
         "distance": "6M",
         "pace": "9:45/Mile",
         "time": "58",
-        "intensity": "5/10"
+        "intensity": "5/10",
+        "type": "Running"
       },
       "thursday": {
         "sessionName": "Threshold",
         "distance": "5M",
         "pace": "Half Marathon",
         "time": "50",
-        "intensity": "7/10"
+        "intensity": "7/10",
+        "type": "Running"
       },
       "friday": {
         "sessionName": "Rest"
@@ -494,14 +542,16 @@
         },
         "pace": "11:00",
         "time": "55",
-        "intensity": "6/10"
+        "intensity": "6/10",
+        "type": "Running"
       },
       "sunday": {
         "sessionName": "Long Run",
         "distance": "14M",
         "pace": "10:00",
         "time": "140",
-        "intensity": "9/10"
+        "intensity": "9/10",
+        "type": "Running"
       }
     },
     {
@@ -518,21 +568,24 @@
         },
         "pace": "5K",
         "time": "65",
-        "intencity": "8/10"
+        "intencity": "8/10",
+        "type": "Running"
       },
       "wednesday": {
         "sessionName": "Steady",
         "distance": "4M",
         "pace": "9:45/Mile",
         "time": "38",
-        "intensity": "6/10"
+        "intensity": "6/10",
+        "type": "Running"
       },
       "thursday": {
         "sessionName": "Fartlek",
         "distance": "4M",
         "pace": "10:00/Mile",
         "time": "43",
-        "intensity": "7/10"
+        "intensity": "7/10",
+        "type": "Running"
       },
       "friday": {
         "sessionName": "Rest"
@@ -542,14 +595,16 @@
         "distance": "3M",
         "pace": "11:00",
         "time": "33",
-        "intensity": "3/10"
+        "intensity": "3/10",
+        "type": "Running"
       },
       "sunday": {
         "sessionName": "Race",
         "distance": "10K",
         "pace": "8:00",
         "time": "50",
-        "intensity": "10/10"
+        "intensity": "10/10",
+        "type": "Running"
       }
     },
     {
@@ -566,21 +621,24 @@
         },
         "pace": "5K",
         "time": "45",
-        "intencity": "8/10"
+        "intencity": "8/10",
+        "type": "Running"
       },
       "wednesday": {
         "sessionName": "Steady",
         "distance": "3M",
         "pace": "9:45/Mile",
         "time": "28",
-        "intensity": "5/10"
+        "intensity": "5/10",
+        "type": "Running"
       },
       "thursday": {
         "sessionName": "Easy",
         "distance": "3M",
         "pace": "11:00/Mile",
         "time": "35",
-        "intensity": "6/10"
+        "intensity": "6/10",
+        "type": "Running"
       },
       "friday": {
         "sessionName": "Rest"
@@ -590,14 +648,16 @@
         "distance": "3M",
         "pace": "11:00",
         "time": "33",
-        "intensity": "3/10"
+        "intensity": "3/10",
+        "type": "Running"
       },
       "sunday": {
         "sessionName": "Race",
         "distance": "Half Marathon",
         "pace": "9:00",
         "time": "118",
-        "intensity": "10/10"
+        "intensity": "10/10",
+        "type": "Running"
       }
     }
   ]

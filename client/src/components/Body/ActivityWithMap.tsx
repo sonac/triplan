@@ -11,9 +11,11 @@ export default (props) => {
 
   const iconMap = {
     Run: "images/shoe_icon.svg",
-    Bike: "images/bike_icon.svg",
+    Ride: "images/bike_icon.svg",
     Swim: "images/swim_icon.svg",
   };
+
+  console.log(activity);
 
   return (
     <div className="activityWithMap" style={{ margin: "3vw" }}>

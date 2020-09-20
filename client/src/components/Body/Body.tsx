@@ -152,7 +152,13 @@ export default (_) => {
         </Route>
         <Route path="/plan/:planName" children={<Plan />} />
         <Route path="/">
-          <div>hey body</div>
+          <div className="welcomeMessage">
+            <p>Welcome to the Triplan</p>
+            <p>
+              Here you can find plan that suits your needs and will help to
+              improve your performance
+            </p>
+          </div>
         </Route>
       </Switch>
       <Modal

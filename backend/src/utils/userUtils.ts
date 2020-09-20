@@ -37,7 +37,10 @@ export const nextMonday = (date: Date): Date => {
   return date;
 };
 
-const weekOfActivities = (date: Date, week: IPlanWeek): ActivityWithDate[] => {
+export const weekOfActivities = (
+  date: Date,
+  week: IPlanWeek
+): ActivityWithDate[] => {
   const activities: ActivityWithDate[] = [];
   for (let i = 0; i < 7; i++) {
     const d = new Date(date);
@@ -45,7 +48,7 @@ const weekOfActivities = (date: Date, week: IPlanWeek): ActivityWithDate[] => {
     // @ts-ignore
     const trainingDay: IPlanDay = week[dow];
     activities.push({
-      activityType: "Running",
+      activityType: trainingDay.type || trainingDay.sessionName,
       date: d,
       description: stringifyTrainingDay(trainingDay),
     });

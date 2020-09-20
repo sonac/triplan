@@ -22,9 +22,11 @@ const iconMap = {
   Running: "images/shoe_icon.svg",
   Cycling: "images/bike_icon.svg",
   Swimming: "images/swim_icon.svg",
+  Rest: "images/rest.png",
 };
 
 export default (props) => {
+  console.log(props.activity.activityType);
   const icon = iconMap[props.activity.activityType];
   return (
     <div className="activity">
