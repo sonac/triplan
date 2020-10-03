@@ -56,6 +56,7 @@ export default () => {
           },
           body: JSON.stringify(activationPlan),
         });
+        window.location.href = "/my-plan";
         setIsSending(false);
       } else return;
     },

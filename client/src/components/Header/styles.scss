@@ -1,8 +1,8 @@
 .header {
   width: 100%;
   height: 25%;
-  font-family: "Soulmaze Outlined";
-  color: white;
+  font-family: "Soulmaze";
+  color: #1e202c;
   display: grid;
   grid-template-columns: 20% 60% 10% 10%;
 }
@@ -13,8 +13,9 @@
   font-size: 8em;
   grid-column-start: 2;
   grid-column-end: 3;
-  padding-top: 3%;
+  padding-top: 5%;
   overflow: hidden;
+  -webkit-text-stroke: 0.4px white;
 }
 
 .authBlock {
@@ -28,41 +29,47 @@
 }
 
 .signUpButton {
-  font-size: 1.4em;
+  font-size: 1em;
   text-align: center;
+  width: 9em;
   background-image: linear-gradient(to right, #9453ff, #0085ff);
-  width: 8em;
-  height: 40%;
+  height: 33%;
   border-radius: 2em;
   display: flex;
   align-content: center;
   justify-content: center;
   flex-direction: column;
+  color: white;
+  letter-spacing: 0.1em;
 }
 
 .logoutButton {
-  font-size: 1.4em;
+  font-size: 1em;
   text-align: center;
-  width: 8em;
-  height: 40%;
+  width: 9em;
+  height: 33%;
   border-radius: 2em;
   box-shadow: 4px 4px 12px #363a4f, -4px -4px 12px #000000;
   display: flex;
   align-content: center;
   justify-content: center;
   flex-direction: column;
+  color: white;
+  letter-spacing: 0.1em;
 }
 
 .loginButton {
-  font-size: 1.4em;
+  font-size: 1em;
   text-align: center;
-  width: 8em;
-  height: 45%;
+  width: 9em;
+  height: 33%;
   border-radius: 2em;
   display: flex;
   align-content: center;
   justify-content: center;
   flex-direction: column;
+  color: white;
+  letter-spacing: 0.1em;
 }
 
 .loginButton:hover {
@@ -81,10 +88,12 @@
   grid-column-start: 1;
   grid-column-end: 5;
   font-family: "Soulmaze";
-  font-size: 2em;
+  font-size: 1.4em;
+  letter-spacing: 0.1em;
   display: grid;
-  padding-left: 25%;
-  grid-template-columns: 15% 5% 20% 5% 20%;
+  padding-left: 28%;
+  grid-template-columns: 17% 5% 17% 5% 17%;
+  color: white;
 }
 
 .navItem {

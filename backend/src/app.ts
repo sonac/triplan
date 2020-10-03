@@ -11,6 +11,7 @@ import {
   addStravaAccessCode,
   updateRefreshToken,
   activatePlan,
+  stopPlan,
 } from "./services/user";
 import bodyParser from "body-parser";
 import { IncomingHttpHeaders } from "http";
@@ -138,7 +139,7 @@ app.post("/api/v1/user/strava-access-code", (req, res) => {
 });
 
 app.get("/api/v1/user/fetch-activities", (req, res) => {
-  logger.info(req.headers);
+  logger.debug(req.headers);
   const token = hasToken(req.headers);
   if (!token) {
     res.status(400).send("No token");
@@ -178,6 +179,24 @@ app.post("/api/v1/user/activate-plan", (req, res) => {
       })
       .catch((err) => {
         logger.error("Error occured during plan activation " + err.message);
+        res.status(500).send(err.message);
+      });
+  }
+});
+
+app.post("/api/v1/user/stop-plan", (req, res) => {
+  const token = hasToken(req.headers);
+  if (!token) {
+    res.status(400).send("No token");
+  } else {
+    logger.info("Stopping plan for user");
+    stopPlan(token)
+      .then((r) => {
+        logger.info(`Plan for user ${r.email} stopped`);
+        res.send(r);
+      })
+      .catch((err) => {
+        logger.error("Error occured during plan termination" + err.message);
         res.status(500).send(err.message);
       });
   }

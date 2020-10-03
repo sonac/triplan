@@ -22,7 +22,7 @@ const userFromToken = async (token: string): Promise<IUser> => {
     logger.debug(`User with tokne ${token} not found`);
     throw new Error(`User with such token doesn't exist`);
   }
-  logger.debug(`Retrieved user:  ${user}`);
+  logger.debug(`Retrieved user:  ${user.email}`);
   return user;
 };
 export const getUsers = () => {
@@ -99,7 +99,7 @@ export const getStravaActivities = async (token: string): Promise<IUser> => {
       throw new Error("Something went wrong, please retry");
     }
   }
-  logger.debug(`Fetching activities for user: ${user}`);
+  logger.debug(`Fetching activities for user: ${user.email}`);
   const activities: IStravaActivity[] = await getActivities(user.stravaToken);
   await UserModel.findOneAndUpdate(
     { email: user.email },
@@ -120,6 +120,14 @@ export const activatePlan = async (
   await UserModel.findOneAndUpdate(
     { authToken: token },
     { activePlan: plan, planStartedDate: new Date() }
+  );
+  return await userFromToken(token);
+};
+
+export const stopPlan = async (token: string): Promise<IUser> => {
+  await UserModel.findOneAndUpdate(
+    { authToken: token },
+    { activePlan: null, planStartedDate: null }
   );
   return await userFromToken(token);
 };

@@ -29,7 +29,7 @@ export const customStyles = {
     fontFamily: "Roboto Mono",
     color: "white",
     border: 0,
-    boxShadow: "inset 4px 4px 12px #3A3F5E, inset -4px -4px 12px #000000",
+    boxShadow: "4px 4px 12px 0 #0f1015, -4px -4px 12px #313548",
     borderRadius: "2em",
   },
 };
