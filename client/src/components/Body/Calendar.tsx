@@ -112,7 +112,7 @@ export default () => {
   };
 
   const stopPlan = async (): Promise<void> => {
-    const resp = await fetch("/api/v1/user/stop-plan", {
+    await fetch("/api/v1/user/stop-plan", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
