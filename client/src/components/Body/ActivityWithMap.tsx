@@ -15,8 +15,6 @@ export default (props) => {
     Swim: "images/swim_icon.svg",
   };
 
-  console.log(activity);
-
   return (
     <div className="activityWithMap" style={{ margin: "3vw" }}>
       <p

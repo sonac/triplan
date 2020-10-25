@@ -56,7 +56,6 @@ export default (props) => {
             actions.setPlans(data);
           })
           .catch((err) => {
-            console.log(err);
             throw new Error(err);
           })
       );

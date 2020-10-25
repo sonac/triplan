@@ -23,6 +23,7 @@ import {
   deletePlanById,
 } from "./services/plan";
 import { addDatesToActivities } from "./utils/userUtils";
+import routes from "./routes/botRoutes";
 
 export const logger = pino({
   name: "triplan",
@@ -42,6 +43,7 @@ const hasToken = (headers: IncomingHttpHeaders): string | undefined => {
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "../build")));
+app.use("/", routes);
 
 app.get("/", (_, res) => {
   res.sendFile(path.join(__dirname, "../build", "index.html"));

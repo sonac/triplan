@@ -26,7 +26,6 @@ const iconMap = {
 };
 
 export default (props) => {
-  console.log(props.activity.activityType);
   const icon = iconMap[props.activity.activityType];
   return (
     <div className="activity">

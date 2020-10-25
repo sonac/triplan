@@ -122,6 +122,8 @@ td {
   box-shadow: 4px 4px 16px 0 #313548, -4px -4px 16px #0f1015;
   transform: rotate(180deg);
   margin-left: 1em;
+  grid-column: 2;
+  grid-row: 1;
 }
 
 .rightArrow:hover {
@@ -319,4 +321,29 @@ p {
   color: white;
   font-size: 3em;
   text-align: center;
+}
+
+.systemButtons {
+  grid-column: 3;
+  display: flex;
+  padding-top: 2em;
+  padding-left: 5em;
+}
+
+.systemButton {
+  font-size: 1em;
+  text-align: center;
+  width: 9em;
+  height: 33%;
+  border-radius: 2em;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+  color: white;
+  letter-spacing: 0.1em;
+}
+
+.systemButton:hover {
+  cursor: pointer;
 }
