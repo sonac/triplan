@@ -16,6 +16,7 @@ export interface IPlanDay extends Document {
   pace: string | null;
   time: string | null;
   intensity: string | null;
+  type: string | null;
 }
 
 export interface IPlanWeek extends Document {
@@ -51,6 +52,7 @@ const PlanDaySchema: Schema = new Schema({
   pace: { type: String, required: false },
   time: { type: String, required: false },
   intensity: { type: String, required: false },
+  type: { type: String, required: false },
 });
 
 const PlanWeekSchema: Schema = new Schema({

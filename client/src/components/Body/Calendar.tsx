@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
+import { useCookies } from "react-cookie";
 import moment from "moment";
 import ActivityComponent, { Activity } from "./Activity";
 import { useGlobal, State, Actions } from "../../state";
@@ -89,6 +90,7 @@ export default () => {
   const [state, actions] = useGlobal<State, Actions>();
   const [monthIdx, setMonth] = useState(moment().month());
   const [yearIdx, setYear] = useState(moment().year());
+  const [cookies, ,] = useCookies(["auth"]);
 
   const month: string = moment().month(monthIdx).format("MMMM");
   const year: string = moment().year(yearIdx).format("YYYY");
@@ -109,6 +111,17 @@ export default () => {
     return mIdx + 1;
   };
 
+  const stopPlan = async (): Promise<void> => {
+    const resp = await fetch("/api/v1/user/stop-plan", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        Authorization: "Bearer " + cookies.apiKey,
+      },
+    });
+    window.location.href = "/plan";
+  };
+
   const plannedActivities: Activity[] = state.user
     ? state.user.activities.map((activity: any) => {
         return { ...activity, date: new Date(activity.date) };
@@ -116,63 +129,86 @@ export default () => {
     : [];
 
   return (
-    <div className="calendarContainer">
-      <div className="month">{month}</div>
-      <div className="year">{year}</div>
-      <img
-        className="leftArrow"
-        src="images/left_arrow.svg"
-        onClick={() => setMonth(safeMonthYearSubstraction(monthIdx))}
-        alt=""
-      />
-      <div className="calendar">
-        <table>
-          <thead>
-            <tr>
-              {daysOfWeek.map((dayOfWeek) => (
-                <th className="calendarTH" key={dayOfWeek}>
-                  <div className="dowContainer">{dayOfWeek}</div>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {buildMonthCalendar(monthIdx, yearIdx).map((week) => (
-              <tr className="calendarTR" key={week.toString()}>
-                {week.map((day) => {
-                  const filteredActivities = plannedActivities.filter(
-                    (activity) => moment(activity.date).isSame(day, "day")
-                  );
-                  return filteredActivities.length > 0 ? (
-                    <td className="calendarTD" key={day.getDate()}>
-                      {day.getDate()}
-                      <div className="activitiesContainer">
-                        {filteredActivities.map((activity) => (
-                          <div
-                            onClick={() =>
-                              actions.activityModalSwitch(activity)
-                            }
-                          >
-                            <ActivityComponent activity={activity} />
-                          </div>
-                        ))}
-                      </div>
-                    </td>
-                  ) : (
-                    <td key={day.getDate()}>{day.getDate()}</td>
-                  );
-                })}
+    <div className="wrapper">
+      <div className="calendarContainer">
+        <div className="dateContainer">
+          <img
+            className="leftArrow"
+            src="images/left_arrow.svg"
+            onClick={() => setMonth(safeMonthYearSubstraction(monthIdx))}
+            alt=""
+          />
+          <div className="monthYear">
+            {month} {year}
+          </div>
+
+          <img
+            className="rightArrow"
+            src="images/left_arrow.svg"
+            onClick={() => setMonth(safeMonthYearAddition(monthIdx))}
+            alt=""
+          />
+        </div>
+        <div className="calendar">
+          <table>
+            <thead>
+              <tr>
+                {daysOfWeek.map((dayOfWeek) => (
+                  <th className="calendarTH" key={dayOfWeek}>
+                    <div className="dowContainer">{dayOfWeek}</div>
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {buildMonthCalendar(monthIdx, yearIdx).map((week) => (
+                <tr className="calendarTR" key={week.toString()}>
+                  {week.map((day) => {
+                    const filteredActivities = plannedActivities.filter(
+                      (activity) => moment(activity.date).isSame(day, "day")
+                    );
+                    return filteredActivities.length > 0 ? (
+                      <td className="calendarTD" key={day.getDate()}>
+                        {day.getDate()}
+                        <div className="activitiesContainer">
+                          {filteredActivities.map((activity) => (
+                            <div
+                              onClick={() =>
+                                actions.activityModalSwitch(activity)
+                              }
+                            >
+                              <ActivityComponent activity={activity} />
+                            </div>
+                          ))}
+                        </div>
+                      </td>
+                    ) : (
+                      <td key={day.getDate()}>{day.getDate()}</td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <img
-        className="rightArrow"
-        src="images/left_arrow.svg"
-        onClick={() => setMonth(safeMonthYearAddition(monthIdx))}
-        alt=""
-      />
+      <div
+        className="connectToStrava"
+        style={{
+          textAlign: "center",
+          color: "white",
+          fontSize: "2em",
+          borderRadius: "5em",
+          backgroundColor: "#fc5200",
+          display: "flex",
+          justifyContent: "center",
+          marginLeft: "45vw",
+          marginRight: "45vw",
+        }}
+        onClick={() => stopPlan()}
+      >
+        Stop plan
+      </div>
     </div>
   );
 };

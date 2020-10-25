@@ -73,7 +73,7 @@ export const getActivities = async (
   logger.debug("Headers are: ", headers);
   const resp = await fetch("https://www.strava.com/api/v3/athlete/activities", {
     method: "GET",
-    headers: headers,
+    headers,
   });
   logger.debug(`Response is: ${resp}`);
   const stravaActivitiesJson = await resp.json();

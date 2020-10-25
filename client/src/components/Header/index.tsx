@@ -25,7 +25,7 @@ export default (props) => {
     history.push(toKebab(pageLink));
   };
 
-  const buttonPressed = state.authModal === null ? "inset" : "";
+  const buttonPressed = state.authModal === null ? "" : "inset";
 
   return (
     <div className="header">
@@ -53,7 +53,7 @@ export default (props) => {
           <div
             className="loginButton"
             style={{
-              boxShadow: `${buttonPressed} 4px 4px 12px #363a4f, ${buttonPressed} -4px -4px 12px #000000`,
+              boxShadow: `${buttonPressed} 4px 4px 12px 0 #0f1015, ${buttonPressed} -4px -4px 12px #313548`,
             }}
             onClick={() => actions.authModalSwitch("LOGIN")}
           >
@@ -63,7 +63,9 @@ export default (props) => {
       )}
       <div className="navBar">
         <Link to="/plans" style={{ textDecoration: "none", color: "white" }}>
-          <div className="navItem">PLANS</div>
+          <div className="navItem" style={{ textAlign: "right" }}>
+            PLANS
+          </div>
         </Link>
         <div className="navItem">/</div>
         <Link
@@ -76,7 +78,11 @@ export default (props) => {
         </Link>
         <div className="navItem">/</div>
         <Link to="/my-plan" style={{ textDecoration: "none", color: "white" }}>
-          <div className="navItem" onClick={() => handleClick("MY PLAN")}>
+          <div
+            className="navItem"
+            style={{ textAlign: "left" }}
+            onClick={() => handleClick("MY PLAN")}
+          >
             MY PLAN
           </div>
         </Link>

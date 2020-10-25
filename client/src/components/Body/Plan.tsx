@@ -19,6 +19,8 @@ export default () => {
   );
   const [week, setWeek] = useState(1);
   const [isSendding, setIsSending] = useState(false);
+  const [metricPressed, pressMetric] = useState(true);
+  const [impPressed, pressImp] = useState(false);
 
   const extendedDaysOfWeek = (weekNumber: number): string[] =>
     [weekNumber.toString() + " week"].concat(daysOfWeek);
@@ -28,11 +30,66 @@ export default () => {
       interval.restDistance || interval.restTime
     } rest`;
 
+  const pressButton = (btnName: string) => {
+    if (btnName === "METRIC") {
+      pressMetric(true);
+      pressImp(false);
+    }
+    if (btnName === "IMPERIAL") {
+      pressMetric(false);
+      pressImp(true);
+    }
+  };
+
   const max = (numX: number, numY: number): number =>
     numX > numY ? numX : numY;
 
   const min = (numX: number, numY: number): number =>
     numX < numY ? numX : numY;
+
+  const convertDistanceToMetric = (distance: string): string => {
+    if (distance === undefined || Number.isNaN(parseInt(distance, 10))) {
+      return distance;
+    }
+    const res = distance.toLowerCase().includes("k")
+      ? parseInt(distance, 10)
+      : parseInt(distance, 10) * 1.60934;
+    return res.toFixed(1) + " Km";
+  };
+
+  const convertPaceToMetric = (pace: string): string => {
+    if (
+      pace === undefined ||
+      Number.isNaN(parseInt(pace, 10)) ||
+      pace.endsWith("K")
+    ) {
+      return pace;
+    }
+    const initPaceMins = parseInt(pace.split(":")[0], 10);
+    const initPaceSec = parseInt(pace.split(":")[1], 10) / 100;
+    const rawPaceConverted = (initPaceMins / 1.60934 + initPaceSec / 1.60934)
+      .toFixed(2)
+      .toString();
+    const rawMinutes = rawPaceConverted.split(".")[0];
+    const rawSeconds = (parseInt(rawPaceConverted.split(".")[1], 10) * 0.6).toFixed(
+      0
+    );
+    return rawMinutes + ":" + rawSeconds;
+  };
+
+  const distanceTrueValue = (baseVal: string): string => {
+    if (metricPressed) {
+      return convertDistanceToMetric(baseVal);
+    }
+    return baseVal;
+  };
+
+  const paceTrueValue = (baseVal: string): string => {
+    if (metricPressed) {
+      return convertPaceToMetric(baseVal);
+    }
+    return baseVal;
+  };
 
   useEffect(() => {
     if (!plan) {
@@ -56,6 +113,7 @@ export default () => {
           },
           body: JSON.stringify(activationPlan),
         });
+        window.location.href = "/my-plan";
         setIsSending(false);
       } else return;
     },
@@ -77,6 +135,34 @@ export default () => {
           onClick={() => setWeek(max(1, week - 1))}
           alt=""
         />
+        <div className="systemButtons">
+          <div
+            className="systemButton"
+            style={{
+              boxShadow: `${
+                metricPressed ? "inset" : ""
+              } 4px 4px 12px 0 #0f1015, ${
+                metricPressed ? "inset" : ""
+              } -4px -4px 12px #313548`,
+            }}
+            onClick={() => pressButton("METRIC")}
+          >
+            METRIC
+          </div>
+          <div
+            className="systemButton"
+            style={{
+              boxShadow: `${
+                impPressed ? "inset" : ""
+              } 4px 4px 12px 0 #0f1015, ${
+                impPressed ? "inset" : ""
+              } -4px -4px 12px #313548`,
+            }}
+            onClick={() => pressButton("IMPERIAL")}
+          >
+            IMPERIAL
+          </div>
+        </div>
         <table className="planDetails">
           <thead>
             <tr>
@@ -126,11 +212,11 @@ export default () => {
                       key={dayNumber}
                       style={{ color: "white", fontFamily: "Arial" }}
                     >
-                      {
+                      {distanceTrueValue(
                         plan.trainings[week - 1][
                           extendedDaysOfWeek(week)[dayNumber].toLowerCase()
                         ].distance
-                      }
+                      )}
                     </td>
                   );
                 }
@@ -178,11 +264,11 @@ export default () => {
                       key={dayNumber}
                       style={{ color: "white", fontFamily: "Arial" }}
                     >
-                      {
+                      {paceTrueValue(
                         plan.trainings[week - 1][
                           extendedDaysOfWeek(week)[dayNumber].toLowerCase()
                         ].pace
-                      }
+                      )}
                     </td>
                   );
                 }
