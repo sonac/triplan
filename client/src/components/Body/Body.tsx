@@ -123,10 +123,7 @@ export default (_) => {
       actions,
       removeCookie,
       setCookie,
-      isValidEmail,
-      isStrongPassword,
       setErrMessage,
-      errMessage,
     ]
   );
 
