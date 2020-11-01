@@ -14,4 +14,4 @@ build
 .localenv
 .metals
 backend/mongo-init.js
-node_modules
+telegram/node_modules
