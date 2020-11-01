@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   app:
-    image: docker.pkg.github.com/sonac/triplan/triplan
+    build: .
     restart: always
     env_file:
       - .env
@@ -55,6 +55,14 @@ services:
     depends_on:
       - app
     command: certonly --webroot --webroot-path=/var/www/html --email sonag007@gmail.com --agree-tos --no-eff-email --staging -d triplan.club  -d www.triplan.club
+  telegram-bot:
+    build: telegram
+    env_file:
+      - .env
+    depends_on:
+      - app
+    networks: 
+      - app-network
 
 volumes:
   certbot-etc:

@@ -27,6 +27,12 @@ export interface IUser extends Document {
   planStartedDate: Date | null;
 }
 
+export interface ITelegram extends Document {
+  chatId: number;
+  firstName: string | null;
+  username: string | null;
+}
+
 const StravaSchema: Schema = new Schema({
   id: { type: Number, required: true },
   distance: { type: Number, required: true },
@@ -37,6 +43,12 @@ const StravaSchema: Schema = new Schema({
   averageSpeed: { type: Number, required: false },
   averageWatts: { type: Number, required: false },
   mapPolyline: { type: String, required: false },
+});
+
+const TelegramSchema: Schema = new Schema({
+  chatId: { type: Number, required: true },
+  firstName: { type: String, required: false },
+  userName: { type: String, required: false },
 });
 
 const UserSchema: Schema = new Schema({
@@ -50,6 +62,7 @@ const UserSchema: Schema = new Schema({
   stravaActivities: { type: [StravaSchema], required: false },
   activePlan: { type: PlanSchema, required: false },
   planStartedDate: { type: Date, required: false },
+  telegramInfo: { type: TelegramSchema, required: false },
 });
 
 UserSchema.plugin(uniqueValidator);

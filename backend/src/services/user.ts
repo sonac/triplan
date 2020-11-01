@@ -1,10 +1,17 @@
 import bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import fs from "fs";
-import { IUser, IStravaActivity, UserModel } from "../models/user";
+import { IUser, IStravaActivity, UserModel, ITelegram } from "../models/user";
 import { IPlan } from "../models/plan";
 import { getAuthCode, getActivities } from "./strava";
 import { logger } from "../app";
+
+export interface TelegramInfo {
+  email: string;
+  chatId: number;
+  firstName: string | null;
+  username: string | null;
+}
 
 const keyPath = (): string => {
   const path = process.env.PRIVATE_KEY_PATH;
@@ -19,12 +26,37 @@ const privateKey = process.env.CI ? "" : fs.readFileSync(keyPath());
 const userFromToken = async (token: string): Promise<IUser> => {
   const user = await UserModel.findOne({ authToken: token });
   if (!user) {
-    logger.debug(`User with tokne ${token} not found`);
+    logger.debug(`User with token ${token} not found`);
     throw new Error(`User with such token doesn't exist`);
   }
   logger.debug(`Retrieved user:  ${user.email}`);
   return user;
 };
+
+const userFromEmail = async (userEmail: string): Promise<IUser> => {
+  logger.debug("Trying to retreive user with email " + userEmail);
+  const user = await UserModel.findOne({ email: userEmail });
+  if (!user) {
+    logger.debug(`User with email ${userEmail} not found`);
+    throw new Error(`User with such email doesn't exists`);
+  }
+  logger.debug(`Retreived user: ${user.email}`);
+  return user;
+};
+
+const userWithEmailExists = async (userEmail: string): Promise<boolean> => {
+  try {
+    await userFromEmail(userEmail);
+  } catch (err) {
+    logger.debug("Failed to find user");
+    if (err === `User with such email doesn't exists`) {
+      return false;
+    }
+    throw err;
+  }
+  return true;
+};
+
 export const getUsers = () => {
   return [];
 };
@@ -130,4 +162,32 @@ export const stopPlan = async (token: string): Promise<IUser> => {
     { activePlan: null, planStartedDate: null }
   );
   return await userFromToken(token);
+};
+
+// TODO: Add email verification
+export const addTelegram = async (tgInfo: TelegramInfo): Promise<boolean> => {
+  logger.info(`Adding telegram info ${tgInfo.username}`);
+  const tg = {
+    chatId: tgInfo.chatId,
+    firstName: tgInfo.firstName,
+    username: tgInfo.username,
+  };
+  if (userWithEmailExists(tgInfo.email)) {
+    logger.debug("Updating user with telegram info");
+    try {
+      await UserModel.findOneAndUpdate(
+        { email: tgInfo.email },
+        {
+          telegramInfo: tg,
+        },
+        { new: true }
+      );
+    } catch (e) {
+      logger.debug("Error while updating telegram info");
+      logger.debug(e);
+      throw e;
+    }
+    return true;
+  }
+  return false;
 };
