@@ -26,7 +26,7 @@
     "css-loader": "2.1.1",
     "deck.gl": "^8.1.0",
     "elliptic": "^6.5.4",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "mapbox-gl": "^1.8.1",
     "moment": "^2.24.0",
     "node-sass": "^4.13.0",
